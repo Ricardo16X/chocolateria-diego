@@ -1,0 +1,69 @@
+name: Integracion continua
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  revision:
+    name: Revision de Dockerfiles y scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revisar los Dockerfiles
+        run: |
+          for f in docker/base/Dockerfile docker/auth/Dockerfile docker/catalogo/Dockerfile \
+                   docker/pedidos/Dockerfile docker/pagos/Dockerfile docker/gateway/Dockerfile; do
+            echo "== $f"
+            docker run --rm -i hadolint/hadolint hadolint --failure-threshold error - < "$f"
+          done
+
+      - name: Revisar los scripts de shell
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+          shellcheck --severity=error scripts/*.sh tests/humo/*.sh docker/base/entrypoint.sh
+
+  pruebas:
+    name: Construccion y pruebas de humo
+    runs-on: ubuntu-latest
+    needs: revision
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar el entorno
+        run: cp .env.example .env
+
+      - name: Construir la imagen base
+        run: docker build -f docker/base/Dockerfile -t chocolate-diego/base:dev .
+
+      - name: Construir los microservicios
+        run: docker compose -f docker-compose.yml build
+
+      - name: Levantar los servicios
+        run: docker compose -f docker-compose.yml up -d
+
+      - name: Esperar a la base de datos
+        run: |
+          for _ in $(seq 1 40); do
+            [ "$(docker inspect --format '{{.State.Health.Status}}' chdiego_db 2>/dev/null)" = "healthy" ] && exit 0
+            sleep 5
+          done
+          docker compose logs db; exit 1
+
+      - name: Ejecutar las pruebas de humo
+        run: sleep 15 && bash tests/humo/pruebas-humo.sh
+
+      - name: Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-de-pruebas
+          path: tests/resultados/
+
+      - name: Detener los servicios
+        if: always()
+        run: docker compose -f docker-compose.yml down -v

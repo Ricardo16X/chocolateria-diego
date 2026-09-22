@@ -1,0 +1,39 @@
+# Entorno
+.env
+.env.backup
+*.local
+
+# Dependencias
+src/vendor/
+src/node_modules/
+
+# Compilados y cache de Laravel
+src/public/build/
+src/public/hot
+src/public/storage
+src/storage/*.key
+src/storage/logs/*.log
+src/storage/framework/cache/data/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*
+src/bootstrap/cache/*.php
+src/.phpunit.result.cache
+
+# Evidencias generadas por "make evidencias": se versionan a propósito, para
+# que la entrega en GitHub las muestre sin que el revisor tenga que levantar
+# el sistema (el documento de la Fase 8 las referencia por link relativo).
+# Se regeneran y se vuelven a comitear cuando cambien.
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Resultados de pruebas generados
+tests/resultados/*
+!tests/resultados/.gitkeep
+
+# Ajuste exclusivo de maquinas con Podman rootless (ver el archivo mismo)
+docker-compose.podman-local.yml

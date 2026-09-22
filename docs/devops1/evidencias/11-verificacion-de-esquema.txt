@@ -1,0 +1,68 @@
+============================================================
+ EVIDENCIA 11 — verificacion de esquema
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m============================================================
+ VERIFICACION DE ESQUEMA — Artesanal Chocolate Diego
+ Base de datos : chocolate_diego
+ Servidor      : 8.0.46
+ Fecha         : 2026-09-21 20:09:15
+============================================================
+
+OBJETO                        DOCUMENTO      MYSQL  RESULTADO
+------------------------------------------------------------
+Tablas                               32         32         OK
+Columnas                            274        274         OK
+Llaves foraneas                      56         56         OK
+Restricciones CHECK                  28         28         OK
+Funciones                             5          5         OK
+Disparadores                          3          3         OK
+Procedimientos                        5          5         OK
+Vistas                               10         10         OK
+
+------------------------------------------------------------
+ OBJETOS POR NOMBRE
+------------------------------------------------------------
+
+Funciones:
+  [OK]      fn_bajo_stock_minimo
+  [OK]      fn_calcular_total_venta
+  [OK]      fn_rol_usuario
+  [OK]      fn_stock_disponible
+  [OK]      fn_valor_inventario
+
+Disparadores:
+  [OK]      trg_producto_historial_precio
+  [OK]      trg_venta_bitacora_anulacion
+  [OK]      trg_venta_bitacora_insert
+
+Procedimientos almacenados:
+  [OK]      sp_ajustar_inventario
+  [OK]      sp_anular_venta
+  [OK]      sp_registrar_cliente
+  [OK]      sp_registrar_producto
+  [OK]      sp_registrar_venta
+
+Vistas:
+  [OK]      vw_clientes_compras
+  [OK]      vw_envios_pendientes
+  [OK]      vw_estado_fel
+  [OK]      vw_existencias_actuales
+  [OK]      vw_lotes_proximos_vencer
+  [OK]      vw_pedidos_pendientes
+  [OK]      vw_resumen_ventas_diarias
+  [OK]      vw_stock_bajo
+  [OK]      vw_suscripciones_activas
+  [OK]      vw_ventas_detalladas
+
+------------------------------------------------------------
+ CUADRE DEL KARDEX
+------------------------------------------------------------
+  [OK]      La existencia cuadra con la suma de movimientos
+
+============================================================
+ RESULTADO: la implementacion corresponde al documento.

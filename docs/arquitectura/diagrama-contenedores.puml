@@ -1,0 +1,86 @@
+@startuml diagrama-contenedores
+!pragma layout smetana
+title Artesanal Chocolate Diego — Diagrama de contenedores
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle {
+    RoundCorner 12
+    BorderColor #4B5563
+}
+skinparam node {
+    BorderColor #4B5563
+}
+skinparam database {
+    BorderColor #4B5563
+}
+skinparam ArrowColor #4B5563
+skinparam ArrowFontColor #374151
+
+actor "Navegador\n(staff y tienda en línea)" as navegador
+
+rectangle "Sistema Artesanal Chocolate Diego" as sistema {
+
+    rectangle "gateway\n<<nginx 1.27>>\nÚnico punto de entrada HTTP.\nEnruta cada prefijo al\nmicroservicio correspondiente." as gateway #E0E7FF
+
+    package "Red interna chdiego_net (no expuesta)" as red {
+
+        rectangle "auth\n<<PHP-FPM 8.1 / Laravel 10>>\nIdentidad, roles, permisos,\nauditoría.\nTablas: rol, permiso,\nrol_permiso, usuario, bitacora" as auth #FEF3C7
+
+        rectangle "catalogo\n<<PHP-FPM 8.1 / Laravel 10>>\nProductos, precios, lotes,\nexistencias, kardex; vitrina\npública.\nTablas: categoria, producto,\nhistorial_precio, bodega, lote,\nexistencia, tipo_movimiento,\nmovimiento_inventario,\nreserva_existencia" as catalogo #FEF3C7
+
+        rectangle "pedidos\n<<PHP-FPM 8.1 / Laravel 10>>\nClientes, carrito, envíos,\nsuscripciones.\nTablas: cliente, direccion_entrega,\npedido, detalle_pedido, carrito,\ndetalle_carrito, zona_cobertura,\ntransportista, envio,\nplan_suscripcion, suscripcion" as pedidos #FEF3C7
+
+        rectangle "pagos\n<<PHP-FPM 8.1 / Laravel 10>>\nPunto de venta y facturación\nelectrónica FEL.\nTablas: venta, detalle_venta,\nmetodo_pago, turno_caja,\ndocumento_fel" as pagos #FEF3C7
+
+        rectangle "queue\n<<imagen de pagos>>\nphp artisan queue:work\nColas: fel, correo, default.\nCorre aparte para que la\ncertificación del DTE nunca\nbloquee el registro de la venta." as queue #DDD6FE
+
+        rectangle "scheduler\n<<imagen de catalogo>>\nphp artisan schedule:work\nVencimientos de lote, stock\nbajo, reservas expiradas,\nsuscripciones próximas." as scheduler #DDD6FE
+
+        database "db\n<<MySQL 8.0>>\nModelo relacional de\n32 tablas, 5 funciones,\n3 disparadores, 5 procedimientos,\n10 vistas.\nVolumen: chdiego_db_data" as db #D1FAE5
+
+        database "cache\n<<Redis 7>>\nSesiones, caché,\ncolas de trabajos.\nVolumen: chdiego_cache_data" as cache #D1FAE5
+
+        rectangle "chdiego_app_storage\n<<volumen>>\nstorage/ compartido:\nsesiones, cachés de vista,\nXML del DTE" as vol_storage #F3F4F6
+        rectangle "chdiego_app_public\n<<volumen>>\npublic/ compartido:\nassets compilados por Vite" as vol_public #F3F4F6
+    }
+}
+
+cloud "Certificador FEL-SAT" as fel #FEE2E2
+cloud "SendGrid\n(correo en producción)" as sendgrid #FEE2E2
+
+navegador --> gateway : HTTP :8080\n(único puerto publicado)
+
+gateway --> auth : /api/auth/*
+gateway --> catalogo : /api/catalogo/*\ny vitrina pública (/)
+gateway --> pedidos : /api/pedidos/*
+gateway --> pagos : /api/pagos/*
+
+auth --> db
+catalogo --> db
+pedidos --> db
+pagos --> db
+
+auth --> cache
+catalogo --> cache
+pedidos --> cache
+pagos --> cache
+
+pagos ..> queue : encola\nCertificarDocumentoFel\n/ EnviarNotificacion
+catalogo ..> scheduler : (misma imagen,\ntareas programadas)
+queue --> cache : consume\ncolas fel/correo/default
+scheduler --> db
+
+queue ..> fel : certifica el DTE\n(o adaptador simulado)
+queue ..> sendgrid : correo transaccional
+
+gateway .. vol_public : sirve estáticos\n(css/js) de solo lectura
+auth .. vol_storage
+catalogo .. vol_storage
+pedidos .. vol_storage
+pagos .. vol_storage
+queue .. vol_storage
+scheduler .. vol_storage
+
+@enduml

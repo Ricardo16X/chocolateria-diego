@@ -1,0 +1,11 @@
+============================================================
+ EVIDENCIA 01 — version de docker
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+podman version 5.8.7
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mpodman version 5.8.7
+podman-compose version 1.6.0

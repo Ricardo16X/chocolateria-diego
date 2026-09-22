@@ -1,0 +1,173 @@
+============================================================
+ EVIDENCIA 08 — red interna
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+[
+     {
+          "name": "chdiego_net",
+          "id": "1dab1cfa3c08e6e7e24d0c16f43c5309c26cfae00bcda3ec3c9f1a665db7aafe",
+          "driver": "bridge",
+          "network_interface": "podman1",
+          "created": "2026-09-21T19:51:21.70781816-06:00",
+          "subnets": [
+               {
+                    "subnet": "10.89.0.0/24",
+                    "gateway": "10.89.0.1"
+               }
+          ],
+          "ipv6_enabled": false,
+          "internal": false,
+          "dns_enabled": true,
+          "labels": {
+               "com.docker.compose.project": "chocolate-diego",
+               "io.podman.compose.project": "chocolate-diego"
+          },
+          "ipam_options": {
+               "driver": "host-local"
+          },
+          "containers": {
+               "02f97841f0937de55e480dbc7be4626ed5416e159328ae3b9f6086f3b3e52284": {
+                    "name": "chdiego_pagos",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.15/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "ba:fe:e6:4c:a4:29"
+                         }
+                    }
+               },
+               "0adc910fcc24d15dd6ea1cda85cc891d8fa18f04d16283dc69952af0a9fb55ac": {
+                    "name": "chdiego_scheduler",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.14/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "e6:19:d5:45:e8:39"
+                         }
+                    }
+               },
+               "168eb5b090497dafdf5112e329082cd7d38dd3a0c4782e6191668c4d3f98d1cf": {
+                    "name": "chdiego_gateway",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.11/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "2e:56:0a:d1:05:ae"
+                         }
+                    }
+               },
+               "2bfb8fc8e2fe6b50c9bb847aa18c87bd4576eba12c4d2d49797d12104a91a3e4": {
+                    "name": "chdiego_pedidos",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.7/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "da:2f:fd:96:09:4f"
+                         }
+                    }
+               },
+               "4a8d948f3be64bc928c937146d9a7fcc18fc88a3057bfedf8863fe5897250051": {
+                    "name": "chdiego_db",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.2/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "96:be:3e:0b:a5:53"
+                         }
+                    }
+               },
+               "89ce27cbd20000ff0291ea0c80cda2ef5c80ddc900db6dba9e8424ac2b0b3385": {
+                    "name": "chdiego_auth",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.5/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "82:4c:30:5e:bb:8e"
+                         }
+                    }
+               },
+               "abd8d9a55aa55d4696b69c3e5f0c51170e9db7fc01e9527eb308ab70ae4f0333": {
+                    "name": "chdiego_mail",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.4/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "ee:cd:45:ad:e4:c7"
+                         }
+                    }
+               },
+               "ca8942d1f6371af78e4c38c1f2eb3a72e32aec5fd423b4e329a82273b663b142": {
+                    "name": "chdiego_queue",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.13/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "46:b6:8a:02:42:b8"
+                         }
+                    }
+               },
+               "cde0280c39460b7282bd4a95220a2d49a376d90eb91b80164f12dda061877af0": {
+                    "name": "chdiego_cache",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.3/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "0a:bb:3e:aa:e5:07"
+                         }
+                    }
+               },
+               "f2385fccca97bd25a13c3c508d6653b17f220692b191ea6dcac2ab854ed5bb2d": {
+                    "name": "chdiego_catalogo",
+                    "interfaces": {
+                         "eth0": {
+                              "subnets": [
+                                   {
+                                        "ipnet": "10.89.0.6/24",
+                                        "gateway": "10.89.0.1"
+                                   }
+                              ],
+                              "mac_address": "e6:92:83:96:d7:cf"
+                         }
+                    }
+               }
+          }
+     }
+]

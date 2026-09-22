@@ -1,0 +1,110 @@
+# -----------------------------------------------------------------------------
+# Puerta de enlace — enrutamiento por dominio
+#
+#   /api/auth/*      -> auth
+#   /api/catalogo/*  -> catalogo
+#   /api/pedidos/*   -> pedidos
+#   /api/pagos/*     -> pagos
+#   todo lo demas    -> catalogo (vitrina publica de la tienda)
+#
+# El destino se decide una sola vez, a partir de la URI original, y esa misma
+# variable alimenta tanto el proxy como la cabecera X-Servicio. Asi la cabecera
+# que se observa en las pruebas es, por construccion, el servicio que atendio.
+#
+# Los nombres se resuelven en cada peticion contra el DNS interno del motor
+# de contenedores: si un microservicio se reinicia y cambia de direccion, la
+# puerta de enlace lo encuentra sin reiniciarse, y puede arrancar aunque
+# alguno este caido.
+#
+# RESOLVER_ADDR (variable de entorno, sustituida por envsubst al arrancar el
+# contenedor): direccion del DNS embebido. 127.0.0.11 es la de Docker Engine,
+# fijada por defecto en el Dockerfile. Un entorno con otro motor de
+# contenedores la sobreescribe con su propio valor sin tocar este archivo.
+# -----------------------------------------------------------------------------
+
+map $request_uri $microservicio {
+    default             catalogo;
+    ~^/api/auth/        auth;
+    ~^/api/catalogo/    catalogo;
+    ~^/api/pedidos/     pedidos;
+    ~^/api/pagos/       pagos;
+}
+
+log_format enlace '$remote_addr [$time_local] "$request" $status '
+                  'servicio=$microservicio tiempo=$request_time';
+
+server {
+    listen 80;
+    server_name _;
+    root /var/www/html/public;
+
+    charset utf-8;
+    client_max_body_size 12M;
+    server_tokens off;
+
+    resolver ${RESOLVER_ADDR} valid=5s ipv6=off;
+    resolver_timeout 3s;
+
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Servicio $microservicio always;
+
+    access_log /dev/stdout enlace;
+    error_log  /dev/stderr warn;
+
+    # Salud de la propia puerta de enlace, sin tocar los microservicios
+    location = /estado {
+        access_log off;
+        default_type application/json;
+        return 200 '{"servicio":"gateway","estado":"ok"}';
+    }
+
+    # API de los cuatro microservicios. Toda peticion entra por el
+    # controlador frontal de Laravel del servicio que corresponda.
+    location ^~ /api/ {
+        fastcgi_pass $microservicio:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_param SCRIPT_NAME     /index.php;
+        fastcgi_param REQUEST_URI     $request_uri;
+        fastcgi_param SERVICIO_DESTINO $microservicio;
+        fastcgi_hide_header X-Powered-By;
+        fastcgi_connect_timeout 5s;
+        fastcgi_read_timeout 90s;
+    }
+
+    # Archivos estaticos
+    location ~* \.(css|js|jpg|jpeg|png|gif|svg|webp|woff2?|ttf)$ {
+        expires 30d;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+    location ~ /\.(?!well-known).* { deny all; }
+
+    # Vitrina publica
+    location / {
+        # Sin $uri/: la raiz del sitio debe ir a Laravel, no al indice del directorio.
+        try_files $uri @vitrina;
+    }
+
+    location @vitrina {
+        # $microservicio vale "catalogo" fuera de /api/. Se usa la variable
+        # para que la resolucion ocurra en cada peticion y no al arrancar.
+        fastcgi_pass $microservicio:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_param SCRIPT_NAME     /index.php;
+        fastcgi_param REQUEST_URI     $request_uri;
+        fastcgi_param SERVICIO_DESTINO catalogo;
+        fastcgi_hide_header X-Powered-By;
+        fastcgi_read_timeout 60s;
+    }
+
+    location ~ \.php$ {
+        return 404;
+    }
+}

@@ -1,0 +1,17 @@
+============================================================
+ EVIDENCIA 12 — consumo de recursos
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+NAME               CPU %       MEM USAGE / LIMIT  NET IO
+chdiego_db         1.59%       421.4MB / 11.81GB  151.5kB / 289.6kB
+chdiego_cache      0.55%       4.428MB / 11.81GB  3.111MB / 368.9kB
+chdiego_mail       0.02%       9.753MB / 11.81GB  19.64kB / 3.962kB
+chdiego_auth       0.05%       30.88MB / 11.81GB  32.43kB / 21.81kB
+chdiego_catalogo   0.32%       45.68MB / 11.81GB  254.2kB / 1.129MB
+chdiego_pedidos    0.05%       32.57MB / 11.81GB  25.4kB / 14.23kB
+chdiego_pagos      0.06%       33MB / 11.81GB     10.62kB / 11.62kB
+chdiego_queue      4.87%       55.45MB / 11.81GB  451.5kB / 2.84MB
+chdiego_scheduler  0.40%       28.19MB / 11.81GB  7.979kB / 4.291kB
+chdiego_gateway    0.02%       7.86MB / 11.81GB   1.03MB / 39.19kB

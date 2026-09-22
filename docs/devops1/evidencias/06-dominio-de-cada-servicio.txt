@@ -1,0 +1,18 @@
+============================================================
+ EVIDENCIA 06 — dominio de cada servicio
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+--- chocolate-diego/auth
+Modulo: Seguridad
+Tablas: rol,permiso,rol_permiso,usuario,bitacora
+--- chocolate-diego/catalogo
+Modulo: Catalogo,Inventario
+Tablas: categoria,producto,historial_precio,bodega,lote,existencia,tipo_movimiento,movimiento_inventario,reserva_existencia
+--- chocolate-diego/pedidos
+Modulo: Clientes,Entregas,Suscripcion
+Tablas: cliente,direccion_entrega,pedido,detalle_pedido,carrito,detalle_carrito,zona_cobertura,transportista,envio,plan_suscripcion,suscripcion
+--- chocolate-diego/pagos
+Modulo: PuntoVenta,Fel
+Tablas: venta,detalle_venta,metodo_pago,turno_caja,documento_fel

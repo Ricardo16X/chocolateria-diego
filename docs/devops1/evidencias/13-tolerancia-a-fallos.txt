@@ -1,0 +1,45 @@
+============================================================
+ EVIDENCIA 13 — tolerancia a fallos
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+Se detiene el microservicio pagos y se observa el resto del sistema.
+
+--- Antes de la falla
+  /api/pagos/salud  -> HTTP 200
+  /api/auth/salud   -> HTTP 200
+
+--- docker compose stop pagos
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mchdiego_pagos
+
+--- Durante la falla
+  /api/pagos/salud  -> HTTP 504   (esperado 502)
+  /api/auth/salud   -> HTTP 200   (auth sigue atendiendo)
+  /api/catalogo/salud -> HTTP 200
+
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mCONTAINER ID  IMAGE                                   COMMAND               CREATED         STATUS                    PORTS                                       NAMES
+4a8d948f3be6  docker.io/library/mysql:8.0             mysqld                18 minutes ago  Up 18 minutes (healthy)   0.0.0.0:3307->3306/tcp, 33060/tcp           chdiego_db
+cde0280c3946  docker.io/library/redis:7-alpine        redis-server --ap...  18 minutes ago  Up 18 minutes (healthy)   0.0.0.0:6380->6379/tcp                      chdiego_cache
+abd8d9a55aa5  docker.io/axllent/mailpit:latest                              18 minutes ago  Up 18 minutes             0.0.0.0:8025->8025/tcp, 1025/tcp, 1110/tcp  chdiego_mail
+89ce27cbd200  localhost/chocolate-diego/auth:dev      php-fpm               18 minutes ago  Up 17 minutes             9000/tcp                                    chdiego_auth
+f2385fccca97  localhost/chocolate-diego/catalogo:dev  php-fpm               18 minutes ago  Up 17 minutes             9000/tcp                                    chdiego_catalogo
+2bfb8fc8e2fe  localhost/chocolate-diego/pedidos:dev   php-fpm               18 minutes ago  Up 17 minutes             9000/tcp                                    chdiego_pedidos
+02f97841f093  localhost/chocolate-diego/pagos:dev     php-fpm               18 minutes ago  Exited (0) 9 seconds ago  9000/tcp                                    chdiego_pagos
+ca8942d1f637  localhost/chocolate-diego/pagos:dev     php artisan queue...  18 minutes ago  Up 16 minutes             9000/tcp                                    chdiego_queue
+0adc910fcc24  localhost/chocolate-diego/catalogo:dev  php artisan sched...  18 minutes ago  Up 15 minutes             9000/tcp                                    chdiego_scheduler
+168eb5b09049  localhost/chocolate-diego/gateway:dev   nginx -g daemon o...  18 minutes ago  Up 17 minutes (healthy)   0.0.0.0:8080->80/tcp                        chdiego_gateway
+
+--- docker compose start pagos
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mchdiego_pagos
+
+--- Despues de la recuperacion
+  /api/pagos/salud  -> HTTP 200
+
+La puerta de enlace no se reinicio: resuelve los nombres en cada peticion.

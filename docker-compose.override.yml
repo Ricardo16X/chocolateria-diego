@@ -1,0 +1,85 @@
+# =============================================================================
+# Ajustes de desarrollo. Docker Compose lo aplica automaticamente sobre
+# docker-compose.yml. En el servidor no debe existir: alli se ejecuta
+#   docker compose -f docker-compose.yml up -d
+# =============================================================================
+
+x-codigo-montado: &codigo-montado
+  - ./src:/var/www/html:z
+  - app_storage:/var/www/html/storage
+  # Sin este mount, el volumen con nombre "app_public" de docker-compose.yml
+  # (pensado para produccion: PHP-FPM lo llena, nginx lo sirve de solo
+  # lectura) queda encima de ./src/public en ese mismo punto de montaje y
+  # congela la carpeta en lo que traiga la imagen. En desarrollo eso rompe
+  # @vite(): Laravel no ve el public/build/manifest.json que genera
+  # "npm run build" en el host. gateway ya hace este mismo ajuste mas abajo.
+  - ./src/public:/var/www/html/public:z
+  # Para que "php artisan chdiego:trazabilidad" (Fase 3) pueda escribir
+  # docs/devops1/trazabilidad.md en el repositorio real del equipo, no solo
+  # dentro del contenedor. Ajuste de desarrollo: en produccion no existe, y el
+  # comando lo detecta y avisa en vez de fallar.
+  - ./docs:/var/www/docs_repositorio:z
+
+services:
+
+  auth:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes: *codigo-montado
+
+  catalogo:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes: *codigo-montado
+
+  pedidos:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes: *codigo-montado
+
+  pagos:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes: *codigo-montado
+
+  gateway:
+    volumes:
+      - ./src/public:/var/www/html/public:ro,z
+
+  queue:
+    volumes: *codigo-montado
+    # En desarrollo el worker recarga el codigo en cada trabajo.
+    command: >
+      php artisan queue:listen redis
+      --queue=fel,correo,default
+      --tries=3
+      --timeout=90
+
+  scheduler:
+    volumes: *codigo-montado
+
+  db:
+    ports:
+      - "${DB_PORT_HOST:-3307}:3306"
+
+  cache:
+    ports:
+      - "${REDIS_PORT_HOST:-6380}:6379"
+
+  # Bandeja de correo de prueba. Solo existe en desarrollo; en produccion el
+  # correo sale por SendGrid.
+  mail:
+    image: axllent/mailpit:latest
+    container_name: chdiego_mail
+    ports:
+      - "${MAILPIT_PORT:-8025}:8025"
+    environment:
+      MP_MAX_MESSAGES: 200
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - chdiego_net

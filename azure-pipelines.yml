@@ -1,0 +1,146 @@
+# =============================================================================
+# Artesanal Chocolate Diego — Azure Pipelines
+#
+# Dos etapas:
+#   Construccion  construye la imagen base y los cuatro microservicios, y
+#                 valida la composicion
+#   Pruebas       levanta el sistema completo, ejecuta las 18 pruebas de humo
+#                 y publica los resultados en la pestana Tests de Azure DevOps
+#
+# Cada etapa corre en un agente limpio, por eso Pruebas vuelve a construir las
+# imagenes. Es mas lento que compartirlas, pero no requiere configurar un
+# registro de contenedores.
+#
+# Para crear el pipeline: Pipelines > New pipeline > GitHub (o Azure Repos)
+# > seleccionar el repositorio > Existing Azure Pipelines YAML file >
+# /azure-pipelines.yml
+# =============================================================================
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  APP_VERSION: $(Build.BuildId)
+
+stages:
+
+  # ===========================================================================
+  - stage: Construccion
+    displayName: Construccion de imagenes
+    jobs:
+      - job: Construir
+        displayName: Construir imagen base y microservicios
+        timeoutInMinutes: 30
+        steps:
+          - checkout: self
+
+          - script: cp .env.example .env
+            displayName: Preparar variables de entorno
+
+          - script: docker compose config --quiet
+            displayName: Validar docker-compose.yml
+
+          - script: |
+              docker build -f docker/base/Dockerfile \
+                -t chocolate-diego/base:$(APP_VERSION) .
+            displayName: Construir imagen base
+
+          - script: docker compose build
+            displayName: Construir auth, catalogo, pedidos, pagos y gateway
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - script: |
+              docker images --filter "reference=chocolate-diego/*" \
+                --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+            displayName: Listar imagenes construidas
+
+  # ===========================================================================
+  - stage: Pruebas
+    displayName: Pruebas de humo
+    dependsOn: Construccion
+    jobs:
+      - job: Probar
+        displayName: Levantar el sistema y ejecutar las pruebas
+        timeoutInMinutes: 40
+        steps:
+          - checkout: self
+
+          - script: cp .env.example .env
+            displayName: Preparar variables de entorno
+
+          - script: |
+              docker build -f docker/base/Dockerfile \
+                -t chocolate-diego/base:$(APP_VERSION) .
+              docker compose -f docker-compose.yml build
+            displayName: Construir imagenes
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - script: docker compose -f docker-compose.yml up -d
+            displayName: Levantar los nueve servicios
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - script: |
+              for _ in $(seq 1 40); do
+                estado=$(docker inspect --format '{{.State.Health.Status}}' chdiego_db 2>/dev/null || echo iniciando)
+                if [ "$estado" = "healthy" ]; then
+                  echo "MySQL saludable."
+                  exit 0
+                fi
+                sleep 5
+              done
+              echo "MySQL no alcanzo el estado saludable."
+              docker compose logs db
+              exit 1
+            displayName: Esperar a la base de datos
+
+          - script: |
+              sleep 15
+              docker compose -f docker-compose.yml ps
+            displayName: Estado de los contenedores
+
+          - script: bash tests/humo/pruebas-humo.sh
+            displayName: Ejecutar pruebas de humo
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - task: PublishTestResults@2
+            displayName: Publicar resultados de prueba
+            condition: always()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: tests/resultados/resultados-humo.xml
+              testRunTitle: Pruebas de humo — Artesanal Chocolate Diego
+              failTaskOnFailedTests: true
+
+          - script: |
+              mkdir -p $(Build.ArtifactStagingDirectory)/evidencias
+              docker compose -f docker-compose.yml ps > $(Build.ArtifactStagingDirectory)/evidencias/contenedores.txt 2>&1
+              docker compose -f docker-compose.yml logs --tail=100 > $(Build.ArtifactStagingDirectory)/evidencias/registros.txt 2>&1
+              cp tests/resultados/resultados-humo.xml $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
+            displayName: Reunir evidencias
+            condition: always()
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publicar evidencias
+            condition: always()
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)/evidencias
+              ArtifactName: evidencias-devops1
+
+          - script: docker compose -f docker-compose.yml down -v
+            displayName: Detener los servicios
+            condition: always()

@@ -1,0 +1,13 @@
+============================================================
+ EVIDENCIA 10 — enrutamiento por dominio
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+RUTA                       HTTP     ATENDIDA POR
+/estado                    200      catalogo
+/api/auth/salud            200      auth
+/api/catalogo/salud        200      catalogo
+/api/pedidos/salud         200      pedidos
+/api/pagos/salud           200      pagos
+/                          200      catalogo

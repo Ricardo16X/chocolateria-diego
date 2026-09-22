@@ -1,0 +1,351 @@
+============================================================
+ EVIDENCIA 02 — composicion validada
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mname: chocolate-diego
+networks:
+  chdiego_net:
+    driver: bridge
+    name: chdiego_net
+services:
+  auth:
+    build:
+      args:
+      - VERSION_BASE=dev
+      context: "/home/ricardo16x/Documents/UMG/Curso - SEMINARIO DE TECNOLOG\xCDAS\
+        \ DE INFORMACI\xD3N/Proyecto DOCKER Tarea Canvas/chocolate-diego"
+      dockerfile: docker/auth/Dockerfile
+    container_name: chdiego_auth
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      APP_DEBUG: 'true'
+      APP_ENV: local
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: auth
+    image: chocolate-diego/auth:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+  cache:
+    command:
+    - redis-server
+    - --appendonly
+    - 'yes'
+    - --maxmemory
+    - 128mb
+    - --maxmemory-p********
+    - allkeys-lru
+    container_name: chdiego_cache
+    healthcheck:
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      timeout: 3s
+    image: redis:7-alpine
+    networks:
+    - chdiego_net
+    ports:
+    - 6380:6379
+    restart: unless-stopped
+    volumes:
+    - cache_data:/data
+  catalogo:
+    build:
+      args:
+      - VERSION_BASE=dev
+      context: "/home/ricardo16x/Documents/UMG/Curso - SEMINARIO DE TECNOLOG\xCDAS\
+        \ DE INFORMACI\xD3N/Proyecto DOCKER Tarea Canvas/chocolate-diego"
+      dockerfile: docker/catalogo/Dockerfile
+    container_name: chdiego_catalogo
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      APP_DEBUG: 'true'
+      APP_ENV: local
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: catalogo
+    image: chocolate-diego/catalogo:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+  db:
+    container_name: chdiego_db
+    environment:
+      MYSQL_DATABASE: chocolate_diego
+      MYSQL_PASSWORD: ********
+      MYSQL_ROOT_PASSWORD: ********
+      MYSQL_USER: chocolate
+      TZ: America/Guatemala
+    healthcheck:
+      interval: 10s
+      retries: 12
+      start_period: 60s
+      test:
+      - CMD
+      - mysqladmin
+      - ping
+      - -h
+      - localhost
+      - -u
+      - root
+      - -p********
+      timeout: 5s
+    image: mysql:8.0
+    networks:
+    - chdiego_net
+    ports:
+    - 3307:3306
+    restart: unless-stopped
+    volumes:
+    - db_data:/var/lib/mysql
+    - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro,Z
+    - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro,Z
+  gateway:
+    build:
+      context: "/home/ricardo16x/Documents/UMG/Curso - SEMINARIO DE TECNOLOG\xCDAS\
+        \ DE INFORMACI\xD3N/Proyecto DOCKER Tarea Canvas/chocolate-diego"
+      dockerfile: docker/gateway/Dockerfile
+    container_name: chdiego_gateway
+    depends_on:
+      auth:
+        condition: service_started
+      catalogo:
+        condition: service_started
+      pagos:
+        condition: service_started
+      pedidos:
+        condition: service_started
+    healthcheck:
+      interval: 30s
+      retries: 3
+      start_period: 20s
+      test:
+      - CMD
+      - wget
+      - --quiet
+      - --spider
+      - http://127.0.0.1/estado
+      timeout: 5s
+    image: chocolate-diego/gateway:dev
+    networks:
+    - chdiego_net
+    ports:
+    - 8080:80
+    restart: unless-stopped
+    volumes:
+    - ./src/public:/var/www/html/public:ro,z
+  mail:
+    container_name: chdiego_mail
+    environment:
+      MP_MAX_MESSAGES: 200
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    image: axllent/mailpit:latest
+    networks:
+    - chdiego_net
+    ports:
+    - 8025:8025
+  pagos:
+    build:
+      args:
+      - VERSION_BASE=dev
+      context: "/home/ricardo16x/Documents/UMG/Curso - SEMINARIO DE TECNOLOG\xCDAS\
+        \ DE INFORMACI\xD3N/Proyecto DOCKER Tarea Canvas/chocolate-diego"
+      dockerfile: docker/pagos/Dockerfile
+    container_name: chdiego_pagos
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      APP_DEBUG: 'true'
+      APP_ENV: local
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: pagos
+    image: chocolate-diego/pagos:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+  pedidos:
+    build:
+      args:
+      - VERSION_BASE=dev
+      context: "/home/ricardo16x/Documents/UMG/Curso - SEMINARIO DE TECNOLOG\xCDAS\
+        \ DE INFORMACI\xD3N/Proyecto DOCKER Tarea Canvas/chocolate-diego"
+      dockerfile: docker/pedidos/Dockerfile
+    container_name: chdiego_pedidos
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      APP_DEBUG: 'true'
+      APP_ENV: local
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: pedidos
+    image: chocolate-diego/pedidos:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+  queue:
+    command:
+    - php
+    - artisan
+    - queue:listen
+    - redis
+    - --queue=fel,correo,default
+    - --tries=3
+    - --timeout=90
+    container_name: chdiego_queue
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: queue
+    image: chocolate-diego/pagos:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+  scheduler:
+    command:
+    - php
+    - artisan
+    - schedule:work
+    container_name: chdiego_scheduler
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SERVICIO: scheduler
+    image: chocolate-diego/catalogo:dev
+    networks:
+    - chdiego_net
+    restart: unless-stopped
+    volumes:
+    - ./src:/var/www/html:z
+    - app_storage:/var/www/html/storage
+    - ./src/public:/var/www/html/public:z
+    - ./docs:/var/www/docs_repositorio:z
+volumes:
+  app_public:
+    name: chdiego_app_public
+  app_storage:
+    name: chdiego_app_storage
+  cache_data:
+    name: chdiego_cache_data
+  db_data:
+    name: chdiego_db_data
+x-codigo-montado:
+- ./src:/var/www/html:z
+- app_storage:/var/www/html/storage
+- ./src/public:/var/www/html/public:z
+- ./docs:/var/www/docs_repositorio:z
+x-entorno-comun:
+  DB_HOST: db
+  DB_PORT: 3306
+  MAIL_HOST: mail
+  MAIL_PORT: 1025
+  REDIS_HOST: cache
+  REDIS_PORT: 6379
+x-servicio-comun:
+  depends_on:
+    cache:
+      condition: service_healthy
+    db:
+      condition: service_healthy
+  env_file:
+  - .env
+  networks:
+  - chdiego_net
+  restart: unless-stopped
+

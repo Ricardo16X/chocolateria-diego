@@ -1,0 +1,27 @@
+# =============================================================================
+# Peticiones a la puerta de enlace
+# Se ejecutan desde VS Code con la extension REST Client (humao.rest-client):
+# aparece "Send Request" sobre cada bloque.
+#
+# La cabecera X-Servicio de cada respuesta indica que microservicio atendio.
+# =============================================================================
+
+@base = http://localhost:8080
+
+### Salud de la puerta de enlace
+GET {{base}}/estado
+
+### Microservicio auth
+GET {{base}}/api/auth/salud
+
+### Microservicio catalogo
+GET {{base}}/api/catalogo/salud
+
+### Microservicio pedidos
+GET {{base}}/api/pedidos/salud
+
+### Microservicio pagos
+GET {{base}}/api/pagos/salud
+
+### Vitrina publica (la atiende catalogo)
+GET {{base}}/

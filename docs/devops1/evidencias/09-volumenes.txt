@@ -1,0 +1,10 @@
+============================================================
+ EVIDENCIA 09 — volumenes
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-21 20:09:09
+============================================================
+
+DRIVER      VOLUME NAME
+local       chdiego_db_data
+local       chdiego_cache_data
+local       chdiego_app_storage

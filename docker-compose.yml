@@ -1,0 +1,238 @@
+# =============================================================================
+# Artesanal Chocolate Diego — orquestacion de microservicios
+#
+# Cuatro servicios de dominio, cada uno con su propio Dockerfile y su propio
+# contenedor, sobre una imagen base comun:
+#
+#   auth       identidad, roles, permisos y auditoria
+#   catalogo   productos, precios, lotes, existencias y kardex
+#   pedidos    clientes, carrito, envios y suscripciones
+#   pagos      punto de venta y facturacion electronica FEL
+#
+# Y cinco servicios de infraestructura:
+#
+#   gateway    unico punto de entrada HTTP, enruta por prefijo
+#   db         MySQL 8.0, modelo relacional de 32 tablas
+#   cache      Redis 7, sesiones, cache y cola de trabajos
+#   queue      worker de la cola: certificacion FEL y correo
+#   scheduler  tareas programadas: vencimientos, suscripciones, reservas
+#
+# El worker vive aparte porque la certificacion del DTE ante el certificador
+# FEL-SAT nunca debe bloquear el registro de la venta.
+#
+# IMPORTANTE: la imagen base se construye antes que los servicios.
+#             "make construir" lo hace en el orden correcto.
+# =============================================================================
+
+name: chocolate-diego
+
+x-servicio-comun: &servicio-comun
+  restart: unless-stopped
+  env_file:
+    - .env
+  networks:
+    - chdiego_net
+  depends_on:
+    db:
+      condition: service_healthy
+    cache:
+      condition: service_healthy
+
+x-entorno-comun: &entorno-comun
+  DB_HOST: db
+  DB_PORT: 3306
+  REDIS_HOST: cache
+  REDIS_PORT: 6379
+  MAIL_HOST: mail
+  MAIL_PORT: 1025
+
+services:
+
+  # ===========================================================================
+  # Puerta de enlace
+  # ===========================================================================
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/gateway/Dockerfile
+    image: chocolate-diego/gateway:${APP_VERSION:-dev}
+    container_name: chdiego_gateway
+    restart: unless-stopped
+    depends_on:
+      - auth
+      - catalogo
+      - pedidos
+      - pagos
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - app_public:/var/www/html/public:ro
+    networks:
+      - chdiego_net
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1/estado"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # ===========================================================================
+  # Microservicios de dominio
+  # ===========================================================================
+  auth:
+    <<: *servicio-comun
+    build:
+      context: .
+      dockerfile: docker/auth/Dockerfile
+      args:
+        VERSION_BASE: ${APP_VERSION:-dev}
+    image: chocolate-diego/auth:${APP_VERSION:-dev}
+    container_name: chdiego_auth
+    environment:
+      <<: *entorno-comun
+      SERVICIO: auth
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+
+  catalogo:
+    <<: *servicio-comun
+    build:
+      context: .
+      dockerfile: docker/catalogo/Dockerfile
+      args:
+        VERSION_BASE: ${APP_VERSION:-dev}
+    image: chocolate-diego/catalogo:${APP_VERSION:-dev}
+    container_name: chdiego_catalogo
+    environment:
+      <<: *entorno-comun
+      SERVICIO: catalogo
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+
+  pedidos:
+    <<: *servicio-comun
+    build:
+      context: .
+      dockerfile: docker/pedidos/Dockerfile
+      args:
+        VERSION_BASE: ${APP_VERSION:-dev}
+    image: chocolate-diego/pedidos:${APP_VERSION:-dev}
+    container_name: chdiego_pedidos
+    environment:
+      <<: *entorno-comun
+      SERVICIO: pedidos
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+
+  pagos:
+    <<: *servicio-comun
+    build:
+      context: .
+      dockerfile: docker/pagos/Dockerfile
+      args:
+        VERSION_BASE: ${APP_VERSION:-dev}
+    image: chocolate-diego/pagos:${APP_VERSION:-dev}
+    container_name: chdiego_pagos
+    environment:
+      <<: *entorno-comun
+      SERVICIO: pagos
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+
+  # ===========================================================================
+  # Infraestructura
+  # ===========================================================================
+  db:
+    image: mysql:${MYSQL_VERSION:-8.0}
+    container_name: chdiego_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Debe definirse DB_ROOT_PASSWORD en .env}
+      MYSQL_DATABASE: ${DB_DATABASE:-chocolate_diego}
+      MYSQL_USER: ${DB_USERNAME:-chocolate}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Debe definirse DB_PASSWORD en .env}
+      TZ: America/Guatemala
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro,Z
+      # Se ejecutan en orden alfabetico la primera vez que se crea el volumen.
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro,Z
+    networks:
+      - chdiego_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+  cache:
+    image: redis:7-alpine
+    container_name: chdiego_cache
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 128mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - cache_data:/data
+    networks:
+      - chdiego_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # Worker de la cola. Usa la imagen de pagos porque los trabajos que procesa
+  # pertenecen a ese dominio: certificacion FEL y correo transaccional.
+  queue:
+    <<: *servicio-comun
+    image: chocolate-diego/pagos:${APP_VERSION:-dev}
+    container_name: chdiego_queue
+    environment:
+      <<: *entorno-comun
+      SERVICIO: queue
+    volumes:
+      - app_storage:/var/www/html/storage
+    command: >
+      php artisan queue:work redis
+      --queue=fel,correo,default
+      --tries=5
+      --backoff=30
+      --timeout=90
+      --max-time=3600
+
+  # Tareas programadas. Usa la imagen de catalogo porque la mayoria vigila
+  # vencimientos de lote y existencias bajo minimo.
+  scheduler:
+    <<: *servicio-comun
+    image: chocolate-diego/catalogo:${APP_VERSION:-dev}
+    container_name: chdiego_scheduler
+    environment:
+      <<: *entorno-comun
+      SERVICIO: scheduler
+    volumes:
+      - app_storage:/var/www/html/storage
+    command: php artisan schedule:work
+
+networks:
+  chdiego_net:
+    driver: bridge
+    name: chdiego_net
+
+volumes:
+  db_data:
+    name: chdiego_db_data
+  cache_data:
+    name: chdiego_cache_data
+  app_storage:
+    name: chdiego_app_storage
+  app_public:
+    name: chdiego_app_public
