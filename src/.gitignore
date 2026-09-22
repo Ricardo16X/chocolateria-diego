@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Historial local de psysh (tinker), no es parte del proyecto
+.config/
