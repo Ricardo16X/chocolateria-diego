@@ -1,7 +1,7 @@
 ============================================================
  EVIDENCIA 14 — pruebas de humo
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-28 21:37:03
+ Generada: 2026-09-28 22:56:47
 ============================================================
 
 
@@ -37,6 +37,6 @@
   [PASA]  H18  El kardex cuadra despues del ciclo completo
 
 ================================================================
- 18 pruebas · 18 pasan · 0 fallan · 18 s
+ 18 pruebas · 18 pasan · 0 fallan · 24 s
  Resultados JUnit: tests/resultados/resultados-humo.xml
 ================================================================

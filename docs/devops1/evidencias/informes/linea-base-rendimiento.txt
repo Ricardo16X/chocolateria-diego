@@ -1,13 +1,13 @@
 ============================================================
  LINEA BASE DE RENDIMIENTO — Artesanal Chocolate Diego
- Generada: 2026-09-28 21:37:55
+ Generada: 2026-09-28 22:57:47
  Carga: 200 peticiones, 20 concurrentes
 ============================================================
 
 R01  /estado  200 peticiones, 200 con HTTP 200
-R02  /estado  p50=0.002s  p95=0.007s  umbral=1.000s
-R03  /api/auth/salud  200/200 con HTTP 200  p50=0.078s  p95=0.097s  umbral=3.000s
+R02  /estado  p50=0.003s  p95=0.007s  umbral=1.000s
+R03  /api/auth/salud  200/200 con HTTP 200  p50=0.078s  p95=0.095s  umbral=3.000s
 R04  25 peticiones concurrentes por prefijo: enrutamiento correcto
-R05  memoria tras la carga: chdiego_db=457MB chdiego_cache=11MB chdiego_mail=11MB chdiego_auth=42MB chdiego_catalogo=51MB chdiego_pedidos=37MB chdiego_pagos=41MB chdiego_queue=56MB chdiego_scheduler=28MB chdiego_gateway=14MB (umbral 512MB)
+R05  memoria tras la carga: chdiego_db=436MB chdiego_cache=5MB chdiego_mail=9MB chdiego_auth=43MB chdiego_catalogo=50MB chdiego_pedidos=40MB chdiego_pagos=40MB chdiego_queue=56MB chdiego_scheduler=28MB chdiego_gateway=9MB (umbral 512MB)
 
 Resultado: 5 pruebas, 5 pasan, 0 fallan.

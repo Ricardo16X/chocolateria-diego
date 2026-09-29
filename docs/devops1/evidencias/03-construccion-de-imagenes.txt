@@ -1,20 +1,20 @@
 ============================================================
  EVIDENCIA 03 — construccion de imagenes
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-28 21:37:03
+ Generada: 2026-09-28 22:56:47
 ============================================================
 
 
 STEP 1/6: FROM chocolate-diego/base:dev
 STEP 1/6: FROM chocolate-diego/base:dev
+STEP 1/5: FROM chocolate-diego/base:dev
+STEP 1/5: FROM chocolate-diego/base:dev
 STEP 1/9: FROM nginx:1.27-alpine
-STEP 1/5: FROM chocolate-diego/base:dev
-STEP 2/6: LABEL org.opencontainers.image.title="chocolate-diego-catalogo"       org.opencontainers.image.description="Catalogo de productos e inventario por lotes"       com.chocolatediego.modulo="Catalogo,Inventario"       com.chocolatediego.tablas="categoria,producto,historial_precio,bodega,lote,existencia,tipo_movimiento,movimiento_inventario,reserva_existencia"
-STEP 2/6: LABEL org.opencontainers.image.title="chocolate-diego-pedidos"       org.opencontainers.image.description="Tienda en linea, entregas y suscripciones"       com.chocolatediego.modulo="Clientes,Entregas,Suscripcion"       com.chocolatediego.tablas="cliente,direccion_entrega,pedido,detalle_pedido,carrito,detalle_carrito,zona_cobertura,transportista,envio,plan_suscripcion,suscripcion"
-STEP 1/5: FROM chocolate-diego/base:dev
 STEP 2/9: LABEL org.opencontainers.image.title="chocolate-diego-gateway"       org.opencontainers.image.description="Puerta de enlace de los microservicios"       org.opencontainers.image.vendor="Grupo 8 — Seminario de Tecnologias de Informacion, UMG"
-STEP 2/5: LABEL org.opencontainers.image.title="chocolate-diego-auth"       org.opencontainers.image.description="Identidad, roles y permisos"       com.chocolatediego.modulo="Seguridad"       com.chocolatediego.tablas="rol,permiso,rol_permiso,usuario,bitacora"
+STEP 2/6: LABEL org.opencontainers.image.title="chocolate-diego-pedidos"       org.opencontainers.image.description="Tienda en linea, entregas y suscripciones"       com.chocolatediego.modulo="Clientes,Entregas,Suscripcion"       com.chocolatediego.tablas="cliente,direccion_entrega,pedido,detalle_pedido,carrito,detalle_carrito,zona_cobertura,transportista,envio,plan_suscripcion,suscripcion"
 STEP 2/5: LABEL org.opencontainers.image.title="chocolate-diego-pagos"       org.opencontainers.image.description="Punto de venta y facturacion electronica FEL"       com.chocolatediego.modulo="PuntoVenta,Fel"       com.chocolatediego.tablas="venta,detalle_venta,metodo_pago,turno_caja,documento_fel"
+STEP 2/5: LABEL org.opencontainers.image.title="chocolate-diego-auth"       org.opencontainers.image.description="Identidad, roles y permisos"       com.chocolatediego.modulo="Seguridad"       com.chocolatediego.tablas="rol,permiso,rol_permiso,usuario,bitacora"
+STEP 2/6: LABEL org.opencontainers.image.title="chocolate-diego-catalogo"       org.opencontainers.image.description="Catalogo de productos e inventario por lotes"       com.chocolatediego.modulo="Catalogo,Inventario"       com.chocolatediego.tablas="categoria,producto,historial_precio,bodega,lote,existencia,tipo_movimiento,movimiento_inventario,reserva_existencia"
 --> Using cache e26e25c53e62974177f953526c0c430681f126974114d883b9393886b596b75a
 --> e26e25c53e62
 STEP 3/9: RUN rm /etc/nginx/conf.d/default.conf
@@ -26,33 +26,33 @@ STEP 4/9: ENV RESOLVER_ADDR=127.0.0.11
 STEP 5/9: ENV NGINX_ENVSUBST_FILTER=^RESOLVER_ADDR$
 --> Using cache f2695d95aa5f28683425d469eb5b38afd100cb091e200efce1c1e74218d00191
 --> f2695d95aa5f
---> Using cache 51cdb652c7a6cfb80629c2162e4f64588bf5df36b83f9df7fd14be44d3045375
---> 51cdb652c7a6
 STEP 6/9: COPY docker/gateway/gateway.conf.template /etc/nginx/templates/chocolate-diego.conf.template
---> Using cache c2854dc73b87b9743c07e40c51346e32a9a21f3df1838b087e54b000069fbc85
---> c2854dc73b87
---> Using cache 98ac1349e0cc753b46cd7738cfa59e2a40ac4c05ca4a6bf2b92bdf34b43e2329
---> 98ac1349e0cc
-STEP 3/6: ENV SERVICIO=catalogo     RUTA_SALUD=/api/catalogo/salud
---> Using cache 87f49809c22b20553a3fbf01bc2fd2d364f5528dc7a2dfef6fa0b29330b478a4
---> 87f49809c22b
+--> Using cache 38a002ba876cd9fd2e6ba4679f190af6a24c1560238b3948f7900c05eea63cf4
+--> 38a002ba876c
+--> Using cache 44c87e417ce4858b0d993bcecb76e291bf5555fff6743c6e2481e5f4776f4138
+--> 44c87e417ce4
+--> Using cache c8589acc5ef0c2448a27210ddc9ca672b809ff9dfa52117ed86e98c22814cf48
+--> c8589acc5ef0
+--> Using cache b0a1de73558887cce19f7555d1ededfbcf5d82eec9fedf1faba3901f50727db3
+--> b0a1de735588
 STEP 3/6: ENV SERVICIO=pedidos     RUTA_SALUD=/api/pedidos/salud
-STEP 3/5: ENV SERVICIO=pagos     RUTA_SALUD=/api/pagos/salud
 STEP 3/5: ENV SERVICIO=auth     RUTA_SALUD=/api/auth/salud
---> Using cache 91582534f3dd5e3ff87e39e8deaee390a1b111f74e398a67de90e622cf414d6d
---> 91582534f3dd
---> Using cache 10db209242294bbca868d37f20214a44b85e26630893d03d435cb60961e8c81e
---> 10db20924229
-STEP 4/6: COPY docker/catalogo/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
---> Using cache fc7cf3f9fc516559e675c3d785493c808724dab5125dca5ac1bb6cfab8054403
---> fc7cf3f9fc51
---> Using cache f0be4bd6a740367959bb8a804c304ea95c72cc5e946a49cd209e9360cd20303c
---> f0be4bd6a740
-STEP 4/5: COPY docker/pagos/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
+STEP 3/6: ENV SERVICIO=catalogo     RUTA_SALUD=/api/catalogo/salud
+STEP 3/5: ENV SERVICIO=pagos     RUTA_SALUD=/api/pagos/salud
+--> Using cache 82c96e4e3d1d2be5795fb1459f30f035165660a9ffde3265a27a51bf6e08793c
+--> 82c96e4e3d1d
+--> Using cache bf603efb9caa9b38b504be6fe887619cd46626f84e49aaf598192f3fcd49ee40
+--> bf603efb9caa
 STEP 4/6: COPY docker/pedidos/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
+--> Using cache 0e15b57a311fb1ffda523b618eab5dd43951d2a34d46de5b80e5265684454095
+--> 0e15b57a311f
+STEP 4/6: COPY docker/catalogo/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
+--> Using cache 86c0d7839c48564d8f6a0682c89e2353754e19c14d087aec99e337ace0aba183
+--> 86c0d7839c48
 STEP 4/5: COPY docker/auth/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
 --> Using cache 18a83a5d7bec629e02d98e9c722550d59c97235f136aeaaceb7ce6123372dad1
 --> 18a83a5d7bec
+STEP 4/5: COPY docker/pagos/fpm.conf /usr/local/etc/php-fpm.d/zz-servicio.conf
 STEP 7/9: COPY src/publi[c] /var/www/html/public
 --> Using cache 958957ed29624bb7605b3f9d088cb4ef09b6ef4298969fa167a4bcb1e82e0c75
 --> 958957ed2962
@@ -60,46 +60,46 @@ STEP 8/9: EXPOSE 80
 --> Using cache 49ddb6e77f5b04245cd8e4b30ee609055b7be57e59728f855c32c2f738c1f88b
 --> 49ddb6e77f5b
 STEP 9/9: HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3     CMD wget --quiet --spider http://127.0.0.1/estado || exit 1
---> Using cache 789c9dc3fae85c03a4801c562e60ae6a5dc32b925e269b0d548fa20b915f33db
---> 789c9dc3fae8
+--> Using cache bb8598590c4b3cb81a7b4e19b3fc6dd8f48c1df095baf2a785b67a7851d3f90e
+--> bb8598590c4b
+--> Using cache d13cca9a287bd235033a6c6e94e81a52c653f424c47bb5791a5736f2ca65f15b
+--> d13cca9a287b
 --> Using cache b58c749ff35ffef9a7fe35dc513b10006fc4d248a47940412008525c452a1933
 COMMIT chocolate-diego/gateway:dev
-STEP 5/6: COPY docker/catalogo/opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
---> Using cache 101fd02763e33ecfdf7ec752c85adeb6e245644f6ede8a4f66da9544e12ffb93
---> 101fd02763e3
---> Using cache 5c261248ab68ff5434b9091e263dc5b6fc010a32c1d2b7f6afc95bcdd25da5b4
---> 5c261248ab68
 STEP 5/5: HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3     CMD php -r 'exit(extension_loaded("pdo_mysql") && extension_loaded("redis") ? 0 : 1);'
+--> Using cache 9fab92ab2c20ba6172fcef48627f96920fabe3c4b30cb111f3007b0d48aed556
+--> 9fab92ab2c20
 STEP 5/6: COPY docker/pedidos/carga.ini /usr/local/etc/php/conf.d/zz-carga.ini
+STEP 5/6: COPY docker/catalogo/opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
 --> b58c749ff35f
 Successfully tagged localhost/chocolate-diego/gateway:dev
 b58c749ff35ffef9a7fe35dc513b10006fc4d248a47940412008525c452a1933
---> Using cache 66804b6d92913b76aeb0edb00de2a46ac63f29a385ae41729547570ffdf2453d
---> 66804b6d9291
+--> Using cache 0c9dc195de5f2813497e6561c6aad3ea041d5b6eaf56625b730f282ab9a5b192
+--> 0c9dc195de5f
 STEP 5/5: HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3     CMD php -r 'exit(extension_loaded("pdo_mysql") && extension_loaded("redis") ? 0 : 1);'
---> Using cache f78d570cb4c38940def571f5b6db0b368854266d3a4819ac5bc62daed3793751
+--> Using cache 0f6ccc405265044bfec8218ae566269308e8bb648a86fb99e15bd1d80b48ea25
 COMMIT chocolate-diego/pagos:dev
---> f78d570cb4c3
+--> 0f6ccc405265
 Successfully tagged localhost/chocolate-diego/pagos:dev
---> Using cache 3f27f258efa26047428b45b68f1037c9186a2e9c13407d8ea2d922a64211635f
+0f6ccc405265044bfec8218ae566269308e8bb648a86fb99e15bd1d80b48ea25
+--> Using cache 92503ee28415b7875f10ef92f0b71a58cd936341ddf93bc69e1742cf24df8a7d
 COMMIT chocolate-diego/auth:dev
-f78d570cb4c38940def571f5b6db0b368854266d3a4819ac5bc62daed3793751
---> 3f27f258efa2
+--> 92503ee28415
 Successfully tagged localhost/chocolate-diego/auth:dev
-3f27f258efa26047428b45b68f1037c9186a2e9c13407d8ea2d922a64211635f
---> Using cache 42c8925966f1117cea52e1b65846da86694313b527cd91bb4c1d811242c9517a
---> 42c8925966f1
+92503ee28415b7875f10ef92f0b71a58cd936341ddf93bc69e1742cf24df8a7d
+--> Using cache a7461c01d65284a873694aa4daadbaac8c8519d0d173219ce277a6d6de83c72d
+--> a7461c01d652
 STEP 6/6: HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3     CMD php -r 'exit(extension_loaded("pdo_mysql") && extension_loaded("redis") ? 0 : 1);'
---> Using cache ec9e5479f4ee59fd453241e9c43177eecaba3fc0014c2c47a0155d1fa05d0665
---> ec9e5479f4ee
+--> Using cache 87bf1f6b2fd563a9fac5ad4329c5fa91b0a24adc89b593a0e7466c1cd853d65a
+--> 87bf1f6b2fd5
 STEP 6/6: HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3     CMD php -r 'exit(extension_loaded("pdo_mysql") && extension_loaded("redis") ? 0 : 1);'
---> Using cache 129a7308ca7c707ae5bf938dc37e56249bef73456fc63de55de51f87dd9fb502
-COMMIT chocolate-diego/catalogo:dev
---> 129a7308ca7c
-Successfully tagged localhost/chocolate-diego/catalogo:dev
---> Using cache 00cdebf1280c9a80d48e4a81f0499f170c050992e146dd6600bb36edbc220cb5
+--> Using cache 8149613e54a61825e9a9b3d65ad704b73a9cee263fbb6264a0eb8afe7fcb0fe8
 COMMIT chocolate-diego/pedidos:dev
-129a7308ca7c707ae5bf938dc37e56249bef73456fc63de55de51f87dd9fb502
---> 00cdebf1280c
+--> Using cache 16a939557f9654edf4f08ae17a71f2c2f6e2fb2be271b119669c3ef0fa5574c3
+COMMIT chocolate-diego/catalogo:dev
+--> 8149613e54a6
 Successfully tagged localhost/chocolate-diego/pedidos:dev
-00cdebf1280c9a80d48e4a81f0499f170c050992e146dd6600bb36edbc220cb5
+8149613e54a61825e9a9b3d65ad704b73a9cee263fbb6264a0eb8afe7fcb0fe8
+--> 16a939557f96
+Successfully tagged localhost/chocolate-diego/catalogo:dev
+16a939557f9654edf4f08ae17a71f2c2f6e2fb2be271b119669c3ef0fa5574c3

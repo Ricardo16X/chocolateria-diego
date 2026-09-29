@@ -31,20 +31,67 @@ jobs:
     name: Construccion y las cuatro suites de pruebas
     runs-on: ubuntu-latest
     needs: revision
+    env:
+      # Fija la composicion para TODO el trabajo, incluidos los "docker compose"
+      # que corren dentro de los scripts de prueba. Sin esto el arranque usaba
+      # 9 servicios y las pruebas veian 10, porque docker-compose.override.yml
+      # esta versionado y Compose lo carga solo cuando no se indica -f.
+      COMPOSE_FILE: docker-compose.yml
     steps:
       - uses: actions/checkout@v4
 
       - name: Preparar el entorno
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env
+          # La imagen no lleva src/.env y el .env de la raiz no define
+          # APP_KEY: sin clave, Laravel lanza MissingAppKeyException y
+          # cualquier vista Blade responde 500. Se genera una desechable
+          # para esta corrida. No es un secreto: el agente se destruye al
+          # terminar. En produccion la clave viene de los secretos del
+          # proveedor, nunca de este archivo.
+          echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
 
       - name: Construir la imagen base
         run: docker build -f docker/base/Dockerfile -t chocolate-diego/base:dev .
 
       - name: Construir los microservicios
-        run: docker compose -f docker-compose.yml build
+        run: docker compose build
 
+      # Con depends_on: condition: service_healthy, Compose espera y aborta si
+      # una dependencia no llega a saludable. El mensaje de error por si solo
+      # no dice cual fallo ni por que, asi que si el arranque falla se vuelca
+      # el estado y los registros antes de rendirse.
       - name: Levantar los servicios
-        run: docker compose -f docker-compose.yml up -d
+        run: |
+          set -o pipefail
+          # Los volumenes compartidos (app_storage, app_public) se siembran
+          # desde la imagen la primera vez que un contenedor los monta. Seis
+          # servicios los montan, y al crearse a la vez sobre un volumen nuevo
+          # el sembrado choca consigo mismo: "mkdir ...: file exists". Se
+          # arranca uno solo primero para que siembre, y luego el resto.
+          echo "--- Sembrando los volumenes compartidos con un solo servicio"
+          docker compose up -d --no-deps db cache
+          docker compose up -d --no-deps auth
+          echo "--- Levantando el resto"
+          if ! docker compose up -d; then
+            echo "::error::El arranque de los servicios fallo. Diagnostico abajo."
+            echo "--- Estado de los contenedores"
+            docker compose ps -a || true
+            echo "--- Salud de cada contenedor con healthcheck"
+            for c in chdiego_db chdiego_cache chdiego_gateway; do
+              echo "== $c"
+              docker inspect --format '{{if .State.Health}}estado={{.State.Health.Status}} fallos={{.State.Health.FailingStreak}}{{else}}sin healthcheck{{end}}' "$c" 2>&1 || true
+              docker inspect --format '{{range .State.Health.Log}}salida={{.ExitCode}} {{.Output}}{{end}}' "$c" 2>&1 | tail -5 || true
+            done
+            echo "--- Registros de la base de datos"
+            docker compose logs --tail=120 db || true
+            echo "--- Registros del resto"
+            docker compose logs --tail=40 || true
+            echo "--- Espacio en disco y memoria del agente"
+            df -h / || true
+            free -h || true
+            exit 1
+          fi
 
       - name: Esperar a la base de datos
         run: |
@@ -83,9 +130,18 @@ jobs:
       # Falla el trabajo si alguna suite fallo. El reporte se genera primero,
       # asi que el artefacto queda publicado incluso cuando algo se rompio:
       # es la captura de la ejecucion fallida.
+      # Solo tiene sentido si alguna suite llego a correr. Si el arranque
+      # fallo, las cuatro quedan omitidas y no hay informes que unir: en ese
+      # caso este paso no debe fallar tambien, porque su mensaje taparia la
+      # causa real, que ya quedo en el paso de arranque.
       - name: Generar el reporte HTML y decidir el resultado
         if: always()
-        run: python3 scripts/reporte-pruebas.py
+        run: |
+          if ! ls tests/resultados/resultados-*.xml >/dev/null 2>&1; then
+            echo "::warning::Ninguna suite dejo informe. Revise el paso de arranque: la causa del fallo esta ahi, no aqui."
+            exit 0
+          fi
+          python3 scripts/reporte-pruebas.py
 
       - name: Publicar resultados y reporte
         if: always()
@@ -96,4 +152,4 @@ jobs:
 
       - name: Detener los servicios
         if: always()
-        run: docker compose -f docker-compose.yml down -v
+        run: docker compose down -v

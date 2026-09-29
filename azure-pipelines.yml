@@ -44,6 +44,10 @@ pool:
 
 variables:
   APP_VERSION: $(Build.BuildId)
+  # La composicion de produccion, para las tres etapas y para todo
+  # "docker compose" que corra dentro de los scripts de prueba.
+  # docker-compose.override.yml es de desarrollo y queda fuera.
+  COMPOSE_FILE: docker-compose.yml
 
 stages:
 
@@ -57,7 +61,15 @@ stages:
         steps:
           - checkout: self
 
-          - script: cp .env.example .env
+          - script: |
+              cp .env.example .env
+              # La imagen no lleva src/.env y el .env de la raiz no define
+              # APP_KEY: sin clave, Laravel lanza MissingAppKeyException y
+              # cualquier vista Blade responde 500. Se genera una desechable
+              # para esta corrida. No es un secreto: el agente se destruye al
+              # terminar. En produccion la clave viene de los secretos del
+              # proveedor, nunca de este archivo.
+              echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
             displayName: Preparar variables de entorno
 
           - script: docker compose config --quiet
@@ -89,18 +101,35 @@ stages:
         steps:
           - checkout: self
 
-          - script: cp .env.example .env
+          - script: |
+              cp .env.example .env
+              # La imagen no lleva src/.env y el .env de la raiz no define
+              # APP_KEY: sin clave, Laravel lanza MissingAppKeyException y
+              # cualquier vista Blade responde 500. Se genera una desechable
+              # para esta corrida. No es un secreto: el agente se destruye al
+              # terminar. En produccion la clave viene de los secretos del
+              # proveedor, nunca de este archivo.
+              echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
             displayName: Preparar variables de entorno
 
           - script: |
               docker build -f docker/base/Dockerfile \
                 -t chocolate-diego/base:$(APP_VERSION) .
-              docker compose -f docker-compose.yml build
+              docker compose build
             displayName: Construir imagenes
             env:
               APP_VERSION: $(APP_VERSION)
 
-          - script: docker compose -f docker-compose.yml up -d
+          # Los volumenes compartidos (app_storage, app_public) se siembran
+          # desde la imagen la primera vez que un contenedor los monta. Seis
+          # servicios los montan, y al crearse a la vez sobre un volumen nuevo
+          # el sembrado choca consigo mismo: "mkdir ...: file exists". Se
+          # arranca uno solo primero para que siembre, y luego el resto.
+          - script: |
+              set -e
+              docker compose up -d --no-deps db cache
+              docker compose up -d --no-deps auth
+              docker compose up -d
             displayName: Levantar los nueve servicios
             env:
               APP_VERSION: $(APP_VERSION)
@@ -121,7 +150,7 @@ stages:
 
           - script: |
               sleep 15
-              docker compose -f docker-compose.yml ps
+              docker compose ps
             displayName: Estado de los contenedores
 
           # Las cuatro suites del plan de pruebas, cada una en su propio
@@ -175,8 +204,8 @@ stages:
 
           - script: |
               mkdir -p $(Build.ArtifactStagingDirectory)/evidencias
-              docker compose -f docker-compose.yml ps > $(Build.ArtifactStagingDirectory)/evidencias/contenedores.txt 2>&1
-              docker compose -f docker-compose.yml logs --tail=100 > $(Build.ArtifactStagingDirectory)/evidencias/registros.txt 2>&1
+              docker compose ps > $(Build.ArtifactStagingDirectory)/evidencias/contenedores.txt 2>&1
+              docker compose logs --tail=100 > $(Build.ArtifactStagingDirectory)/evidencias/registros.txt 2>&1
               cp tests/resultados/resultados-*.xml $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
               cp tests/resultados/reporte-de-pruebas.html $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
               cp tests/resultados/linea-base-rendimiento.txt $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
@@ -190,7 +219,7 @@ stages:
               PathtoPublish: $(Build.ArtifactStagingDirectory)/evidencias
               ArtifactName: evidencias-devops1
 
-          - script: docker compose -f docker-compose.yml down -v
+          - script: docker compose down -v
             displayName: Detener los servicios
             condition: always()
 

@@ -10,8 +10,16 @@ Uso:
     make reporte
     python3 scripts/reporte-pruebas.py
 
-Devuelve 0 si todas las pruebas de todos los informes pasaron, 1 si alguna
-fallo, y 2 si no encontro ningun informe que leer.
+Devuelve 0 solo si estan los cuatro informes y todas sus pruebas pasaron.
+Devuelve 1 si alguna prueba fallo O si falta algun informe, y 2 si no
+encontro ninguno.
+
+Que falte un informe es un fallo, no un detalle: las suites corren en los
+pipelines con continue-on-error para que una no oculte a las otras, asi que
+este generador es la unica puerta que decide el resultado. Si una suite muere
+antes de escribir su informe --como paso el 2026-09-29, cuando las unitarias
+no encontraron PHPUnit en la imagen de produccion-- y aca se ignorara su
+ausencia, el trabajo quedaria verde habiendo ejecutado 34 de 73 pruebas.
 """
 
 from __future__ import annotations
@@ -281,9 +289,11 @@ def construir(suites: list[Suite]) -> str:
 
 def main() -> int:
     suites: list[Suite] = []
+    ausentes: list[str] = []
     for archivo, titulo, tipo in SUITES:
         suite = leer_suite(RESULTADOS / archivo, titulo, tipo)
         if suite is None:
+            ausentes.append(archivo)
             print(f"  [ausente] {archivo}")
             continue
         suites.append(suite)
@@ -305,6 +315,18 @@ def main() -> int:
     print()
     print(f"  {total} pruebas · {total - fallidas} pasan · {fallidas} fallan")
     print(f"  Reporte: {DESTINO.relative_to(RAIZ)}")
+
+    if ausentes:
+        print()
+        print(
+            "  FALTAN INFORMES: "
+            + ", ".join(ausentes)
+            + "\n  Esa suite no llego a escribir su informe, asi que sus pruebas no se"
+            "\n  ejecutaron. El recuento de arriba esta incompleto y el resultado no"
+            "\n  puede darse por bueno. Revise el paso correspondiente del pipeline.",
+            file=sys.stderr,
+        )
+        return 1
 
     return 0 if fallidas == 0 else 1
 

@@ -1,6 +1,6 @@
 # Informes de ejecucion de pruebas
 
-Copia de `tests/resultados/`, generada el 2026-09-28 21:37:03 por
+Copia de `tests/resultados/`, generada el 2026-09-28 22:56:47 por
 `scripts/evidencias.sh`. La carpeta original esta en `.gitignore` por ser
 salida generada; esta copia se versiona porque el reporte de ejecucion es un
 entregable de la entrega.

@@ -24,6 +24,24 @@ RUN composer install \
     || echo "Sin composer.json todavia: se omite la instalacion."
 
 # -----------------------------------------------------------------------------
+# Etapa 1b: activos del frontend
+#
+# Vite compila el CSS y el JS a src/public/build. Sin eso, la directiva
+# @vite() de cualquier vista Blade lanza excepcion y la aplicacion no sirve
+# ninguna pagina. .dockerignore excluye src/public/build a proposito: no se
+# copia lo que haya compilado el equipo, se compila aqui desde la fuente.
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS activos
+
+WORKDIR /app
+COPY src/package.json src/package-lock.jso[n] ./
+RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+
+COPY src/resources ./resources
+COPY src/vite.config.js src/tailwind.config.js src/postcss.config.js ./
+RUN npm run build
+
+# -----------------------------------------------------------------------------
 # Etapa 2: imagen base
 # -----------------------------------------------------------------------------
 FROM php:8.1-fpm-alpine AS base
@@ -59,14 +77,22 @@ WORKDIR /var/www/html
 
 COPY --from=vendor --chown=laravel:laravel /app/vendo[r] ./vendor
 COPY --chown=laravel:laravel src/ ./
+COPY --from=activos --chown=laravel:laravel /app/public/build ./public/build
+
+COPY --chmod=755 docker/base/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --from=composer:2.7 /usr/bin/composer /usr/local/bin/composer
+
+# El autoloader se genera aca y no en la etapa 1 porque hasta ahora no existia
+# el codigo de App\: la etapa 1 solo tenia composer.json y composer.lock. Sin
+# este paso la imagen queda con los paquetes pero sin vendor/autoload.php, y
+# todo proceso PHP muere en la primera linea de public/index.php.
+RUN composer dump-autoload --optimize --no-dev --no-interaction \
+    && chown -R laravel:laravel vendor
 
 RUN mkdir -p storage/framework/cache storage/framework/sessions \
              storage/framework/views storage/logs bootstrap/cache \
     && chown -R laravel:laravel storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
-
-COPY --chmod=755 docker/base/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY --from=composer:2.7 /usr/bin/composer /usr/local/bin/composer
 
 USER laravel
 EXPOSE 9000

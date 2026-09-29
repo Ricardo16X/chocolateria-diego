@@ -15,7 +15,7 @@ Para eso están los dos documentos del plan:
 
 | Carpeta | Qué contiene | Para qué sirve |
 |---|---|---|
-| `unitarias/` | `pruebas-unitarias.sh`, que ejecuta PHPUnit dentro del contenedor | Casos U01–U17, sobre las clases de PHP |
+| `unitarias/` | `pruebas-unitarias.sh`, que ejecuta PHPUnit en la imagen de pruebas | Casos U01–U17, sobre las clases de PHP |
 | `humo/` | `pruebas-humo.sh`, 18 pruebas de sistema e integración | Casos H01–H18 |
 | `seguridad/` | `pruebas-seguridad.sh`, 11 pruebas de control de acceso y endurecimiento | Casos S01–S11 |
 | `rendimiento/` | `pruebas-rendimiento.sh`, 5 pruebas de carga | Casos R01–R05 |
@@ -27,11 +27,17 @@ Las pruebas unitarias viven en `src/tests/Unit/` y `src/tests/Feature/`, junto
 al código que prueban, como espera Laravel. Lo que hay en `tests/unitarias/` es
 solo el script que las ejecuta y trae el informe al repositorio.
 
+Corren en una imagen aparte, `docker/pruebas/Dockerfile`, que parte de la base
+y agrega las dependencias de desarrollo. La imagen de producción se instala con
+`--no-dev` y PHPUnit es una de ellas, así que dentro de un microservicio no
+existe: eso funcionaba solo en el equipo de desarrollo, donde el montaje de
+`./src` trae el `vendor` completo del anfitrión.
+
 ## Las cuatro suites
 
 | Suite | Tipo de prueba | Casos | Ejecuciones | Duración | Necesita el sistema levantado |
 |---|---|---|---|---|---|
-| Unitarias | Unitarias | 17 | 39 | menos de 1 s | Solo un contenedor de aplicación |
+| Unitarias | Unitarias | 17 | 39 | menos de 1 s | No: solo la imagen base |
 | Humo | Sistema (H01–H11) e integración (H12–H18) | 18 | 18 | 20 s | Sí, los nueve |
 | Seguridad | Seguridad | 11 | 11 | 9 s | Sí, los nueve |
 | Rendimiento | Rendimiento | 5 | 5 | 2 s | Sí, los nueve |

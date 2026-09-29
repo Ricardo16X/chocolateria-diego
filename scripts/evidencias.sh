@@ -135,17 +135,34 @@ repositorio() {
     echo
     echo
     echo "--- Sincronia con el remoto"
-    local local_hash remoto_hash
+    local local_hash rama upstream upstream_hash main_hash
     local_hash=$(git rev-parse --short HEAD 2>/dev/null)
-    remoto_hash=$(git rev-parse --short origin/main 2>/dev/null)
-    if [ -z "$remoto_hash" ]; then
-        echo "No hay referencia local de origin/main (falta git fetch)."
-    elif [ "$local_hash" = "$remoto_hash" ]; then
-        echo "HEAD y origin/main apuntan al mismo commit: ${local_hash}"
+    rama=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+    # Dos cosas distintas, que antes se confundian en una sola linea: si la
+    # rama actual esta subida, y cuanto le falta a main para tenerla.
+    upstream=$(git rev-parse --abbrev-ref '@{upstream}' 2>/dev/null)
+    if [ -z "$upstream" ]; then
+        echo "La rama ${rama} no tiene rama remota asociada (nunca se subio)."
     else
-        echo "HEAD=${local_hash}  origin/main=${remoto_hash}"
-        printf 'Commits locales sin subir: %s\n' \
-            "$(git rev-list --count origin/main..HEAD 2>/dev/null)"
+        upstream_hash=$(git rev-parse --short "$upstream" 2>/dev/null)
+        if [ "$local_hash" = "$upstream_hash" ]; then
+            echo "Rama ${rama} subida y al dia con ${upstream}: ${local_hash}"
+        else
+            echo "Rama ${rama}: HEAD=${local_hash}  ${upstream}=${upstream_hash}"
+            printf 'Commits sin subir a %s: %s\n' "$upstream" \
+                "$(git rev-list --count "${upstream}..HEAD" 2>/dev/null)"
+        fi
+    fi
+
+    main_hash=$(git rev-parse --short origin/main 2>/dev/null)
+    if [ -z "$main_hash" ]; then
+        echo "No hay referencia local de origin/main (falta git fetch)."
+    elif [ "$local_hash" = "$main_hash" ]; then
+        echo "origin/main apunta al mismo commit: ${main_hash}"
+    else
+        printf 'origin/main=%s, %s commits por delante sin integrar a main\n' \
+            "$main_hash" "$(git rev-list --count "origin/main..HEAD" 2>/dev/null)"
     fi
     echo
     echo "--- Estado del arbol de trabajo"
