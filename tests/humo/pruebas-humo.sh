@@ -137,8 +137,19 @@ p_aislamiento_puertos() {
     [ -z "$expuestos" ] || { echo "Publican puertos al exterior:${expuestos}"; return 1; }
 }
 
+# Un codigo de error de pasarela: la puerta de enlace no pudo hablar con el
+# microservicio. nginx devuelve 502 cuando la conexion es rechazada y 504
+# cuando el nombre no resuelve o la conexion expira, y cual de los dos sale
+# depende del motor de contenedores, no del sistema: Docker Engine da 504 y
+# Podman da 502 ante el mismo contenedor detenido. Exigir uno solo hacia que
+# esta prueba fallara en integracion continua sin que nada estuviera roto.
+es_error_de_pasarela() {
+    case "$1" in 502|503|504) return 0 ;; *) return 1 ;; esac
+}
+
 p_tolerancia_fallos() {
-    # Se detiene pagos: su prefijo debe fallar y los demas deben seguir.
+    # Se detiene pagos: su prefijo debe fallar y los demas deben seguir
+    # atendiendo de verdad, no solo devolver algo distinto de 502.
     $COMPOSE stop pagos >/dev/null 2>&1
     sleep 3
     local pagos_caido auth_vivo
@@ -148,12 +159,24 @@ p_tolerancia_fallos() {
     local pagos_recuperado="502"
     for _ in $(seq 1 30); do
         pagos_recuperado=$(codigo_http /api/pagos/salud)
-        [ "$pagos_recuperado" != "502" ] && break
+        es_error_de_pasarela "$pagos_recuperado" || break
         sleep 2
     done
 
     echo "pagos detenido=${pagos_caido}  auth durante la caida=${auth_vivo}  pagos recuperado=${pagos_recuperado}"
-    [ "$pagos_caido" = "502" ] && [ "$auth_vivo" != "502" ] && [ "$pagos_recuperado" != "502" ]
+
+    local fallos=""
+    es_error_de_pasarela "$pagos_caido" \
+        || fallos+=" pagos detenido devolvio ${pagos_caido}, se esperaba un error de pasarela"
+    # auth tiene que responder 200, no solo "algo que no sea 502". Con la
+    # comprobacion debil anterior, un 500 por aplicacion rota pasaba como si
+    # el aislamiento funcionara.
+    [ "$auth_vivo" = "200" ] \
+        || fallos+=" auth devolvio ${auth_vivo} durante la caida, se esperaba 200"
+    [ "$pagos_recuperado" = "200" ] \
+        || fallos+=" pagos recuperado devolvio ${pagos_recuperado}, se esperaba 200"
+
+    [ -z "$fallos" ] || { echo "Fallos:${fallos}"; return 1; }
 }
 
 p_extensiones() {
