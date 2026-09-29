@@ -1,7 +1,7 @@
 ============================================================
  EVIDENCIA 15 — repositorio y ci
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-28 21:37:03
+ Generada: 2026-09-28 22:56:47
 ============================================================
 
 --- Remoto configurado
@@ -9,22 +9,29 @@ origin	git@github.com:Ricardo16X/chocolateria-diego.git (fetch)
 origin	git@github.com:Ricardo16X/chocolateria-diego.git (push)
 
 --- Rama actual y ramas conocidas
-* main
+* develop
+  main
   remotes/origin/HEAD -> origin/main
+  remotes/origin/develop
   remotes/origin/main
 
 --- Historial (todos los commits)
+43841c9  2026-09-28  Ricardo16X  docs: cuatro defectos mas y las unitarias en su propia imagen
+a92f046  2026-09-28  Ricardo16X  fix: un informe de pruebas ausente ya no pasa por verde
+5cb8afa  2026-09-28  Ricardo16X  fix: las pruebas unitarias no podian correr en integracion continua
+3f1bc41  2026-09-28  Ricardo16X  docs: siete defectos nuevos en el plan y el criterio real de H11
+5284e4d  2026-09-28  Ricardo16X  ci: arranque escalonado, composicion unica y clave desechable
+50e0004  2026-09-28  Ricardo16X  fix: H11 exigia un codigo de error concreto y aceptaba un 500 como salud
+bc718c0  2026-09-28  Ricardo16X  fix: la imagen no podia ejecutar la aplicacion por si sola
+07ed2b8  2026-09-28  Ricardo16X  Agregar scripts de prueba exhaustivos para pruebas de rendimiento, seguridad y unitarias
 cc982b4  2026-09-21  Ricardo16X  chore: excluir el historial local de tinker (psysh), no es parte del proyecto
 f964fa0  2026-09-21  Ricardo16X  feat: infraestructura de microservicios y aplicacion Laravel completas (DEVOPS 1)
 
 --- Sincronia con el remoto
-HEAD y origin/main apuntan al mismo commit: cc982b4
+Rama develop subida y al dia con origin/develop: 43841c9
+origin/main=07ed2b8, 7 commits por delante sin integrar a main
 
 --- Estado del arbol de trabajo
- M .github/workflows/ci.yml
- M Makefile
- M azure-pipelines.yml
- M docs/devops1/documento-devops1.md
  M docs/devops1/evidencias/01-version-de-docker.txt
  M docs/devops1/evidencias/02-composicion-validada.txt
  M docs/devops1/evidencias/03-construccion-de-imagenes.txt
@@ -39,36 +46,28 @@ HEAD y origin/main apuntan al mismo commit: cc982b4
  M docs/devops1/evidencias/12-consumo-de-recursos.txt
  M docs/devops1/evidencias/13-tolerancia-a-fallos.txt
  M docs/devops1/evidencias/14-pruebas-de-humo.txt
+ M docs/devops1/evidencias/15-repositorio-y-ci.txt
+ M docs/devops1/evidencias/16-pruebas-por-tipo.txt
  M docs/devops1/evidencias/README.md
+ M docs/devops1/evidencias/informes/README.md
+ M docs/devops1/evidencias/informes/linea-base-rendimiento.txt
+ M docs/devops1/evidencias/informes/reporte-de-pruebas.html
+ M docs/devops1/evidencias/informes/resultados-humo.xml
+ M docs/devops1/evidencias/informes/resultados-rendimiento.xml
+ M docs/devops1/evidencias/informes/resultados-seguridad.xml
+ M docs/devops1/evidencias/informes/resultados-unitarias.xml
  M scripts/evidencias.sh
- D src/tests/Feature/ExampleTest.php
- D src/tests/Unit/ExampleTest.php
- M tests/README.md
- M tests/casos/casos-de-prueba-azure.csv
-?? docs/devops1/casos-de-prueba.md
-?? docs/devops1/evidencias/15-repositorio-y-ci.txt
-?? docs/devops1/evidencias/16-pruebas-por-tipo.txt
-?? docs/devops1/plan-de-pruebas.md
-?? docs/nube/
-?? scripts/reporte-pruebas.py
-?? src/tests/Feature/CertificadorSimuladoTest.php
-?? src/tests/Unit/ExcepcionNegocioTest.php
-?? src/tests/Unit/ModelosContraEsquemaTest.php
-?? src/tests/Unit/TraduceErroresDeProcedimientoTest.php
-?? tests/rendimiento/
-?? tests/seguridad/
-?? tests/unitarias/pruebas-unitarias.sh
 
 Nota: los archivos de docs/devops1/evidencias/ aparecen aqui porque
 este mismo script los acaba de reescribir. Se confirman en el commit
 siguiente a la captura.
 
 --- Archivos contados por git
-Archivos versionados: 203
+Archivos versionados: 222
 
 --- Integracion continua definida en el repositorio
-.github/workflows/ci.yml         99 lineas
-azure-pipelines.yml              272 lineas
+.github/workflows/ci.yml         155 lineas
+azure-pipelines.yml              301 lineas
 
 --- Etapas del pipeline de Azure Pipelines
     - stage: Construccion

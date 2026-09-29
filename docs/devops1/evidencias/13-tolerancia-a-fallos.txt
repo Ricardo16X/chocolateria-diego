@@ -1,7 +1,7 @@
 ============================================================
  EVIDENCIA 13 — tolerancia a fallos
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-28 21:37:03
+ Generada: 2026-09-28 22:56:47
 ============================================================
 
 Se detiene el microservicio pagos y se observa el resto del sistema.
@@ -15,22 +15,22 @@ Se detiene el microservicio pagos y se observa el resto del sistema.
 chdiego_pagos
 
 --- Durante la falla
-  /api/pagos/salud  -> HTTP 504   (esperado 502)
+  /api/pagos/salud  -> HTTP 502   (esperado 502)
   /api/auth/salud   -> HTTP 200   (auth sigue atendiendo)
   /api/catalogo/salud -> HTTP 200
 
 
 CONTAINER ID  IMAGE                                   COMMAND               CREATED         STATUS                    PORTS                                       NAMES
-874f587d109e  docker.io/library/mysql:8.0             mysqld                47 minutes ago  Up 47 minutes (healthy)   0.0.0.0:3307->3306/tcp, 33060/tcp           chdiego_db
-a40912fba1c7  docker.io/library/redis:7-alpine        redis-server --ap...  47 minutes ago  Up 47 minutes (healthy)   0.0.0.0:6380->6379/tcp                      chdiego_cache
-c2e754919205  docker.io/axllent/mailpit:latest                              47 minutes ago  Up 47 minutes             0.0.0.0:8025->8025/tcp, 1025/tcp, 1110/tcp  chdiego_mail
-380ca52952de  localhost/chocolate-diego/auth:dev      php-fpm               47 minutes ago  Up 46 minutes             9000/tcp                                    chdiego_auth
-212a64db5819  localhost/chocolate-diego/catalogo:dev  php-fpm               47 minutes ago  Up 46 minutes             9000/tcp                                    chdiego_catalogo
-13898d8788af  localhost/chocolate-diego/pedidos:dev   php-fpm               47 minutes ago  Up 46 minutes             9000/tcp                                    chdiego_pedidos
-3cf9daf33354  localhost/chocolate-diego/pagos:dev     php-fpm               47 minutes ago  Exited (0) 8 seconds ago  9000/tcp                                    chdiego_pagos
-9e01fe205ce6  localhost/chocolate-diego/pagos:dev     php artisan queue...  47 minutes ago  Up 46 minutes             9000/tcp                                    chdiego_queue
-ae00fe7b5544  localhost/chocolate-diego/catalogo:dev  php artisan sched...  47 minutes ago  Up 46 minutes             9000/tcp                                    chdiego_scheduler
-853806a2fac5  localhost/chocolate-diego/gateway:dev   nginx -g daemon o...  47 minutes ago  Up 46 minutes (healthy)   0.0.0.0:8080->80/tcp                        chdiego_gateway
+e59d0fd56610  docker.io/library/mysql:8.0             mysqld                26 minutes ago  Up 26 minutes (healthy)   0.0.0.0:3307->3306/tcp, 33060/tcp           chdiego_db
+c83536cc3b62  docker.io/library/redis:7-alpine        redis-server --ap...  26 minutes ago  Up 26 minutes (healthy)   0.0.0.0:6380->6379/tcp                      chdiego_cache
+285a86d2640b  docker.io/axllent/mailpit:latest                              26 minutes ago  Up 26 minutes             0.0.0.0:8025->8025/tcp, 1025/tcp, 1110/tcp  chdiego_mail
+7fa44306e91c  localhost/chocolate-diego/auth:dev      php-fpm               26 minutes ago  Up 26 minutes             9000/tcp                                    chdiego_auth
+cec928c4b05d  localhost/chocolate-diego/catalogo:dev  php-fpm               26 minutes ago  Up 26 minutes             9000/tcp                                    chdiego_catalogo
+0fbcd26f3c0a  localhost/chocolate-diego/pedidos:dev   php-fpm               26 minutes ago  Up 26 minutes             9000/tcp                                    chdiego_pedidos
+56997d75708c  localhost/chocolate-diego/pagos:dev     php-fpm               26 minutes ago  Exited (0) 7 seconds ago  9000/tcp                                    chdiego_pagos
+7048e2e80cdb  localhost/chocolate-diego/pagos:dev     php artisan queue...  26 minutes ago  Up 26 minutes             9000/tcp                                    chdiego_queue
+3a8d5232452d  localhost/chocolate-diego/catalogo:dev  php artisan sched...  26 minutes ago  Up 26 minutes             9000/tcp                                    chdiego_scheduler
+9512a5521ee4  localhost/chocolate-diego/gateway:dev   nginx -g daemon o...  26 minutes ago  Up 26 minutes (healthy)   0.0.0.0:8080->80/tcp                        chdiego_gateway
 
 --- docker compose start pagos
 

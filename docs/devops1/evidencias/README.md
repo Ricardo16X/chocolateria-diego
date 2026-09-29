@@ -2,7 +2,7 @@
 
 Artesanal Chocolate Diego · Grupo 8 · Seminario de Tecnologías de Información
 
-Generadas el 2026-09-28 21:37:03.
+Generadas el 2026-09-28 22:56:47.
 
 | # | Archivo | Qué demuestra |
 |---|---------|---------------|
