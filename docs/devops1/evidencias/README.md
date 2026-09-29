@@ -2,7 +2,7 @@
 
 Artesanal Chocolate Diego · Grupo 8 · Seminario de Tecnologías de Información
 
-Generadas el 2026-09-21 20:09:09.
+Generadas el 2026-09-28 21:37:03.
 
 | # | Archivo | Qué demuestra |
 |---|---------|---------------|
@@ -20,3 +20,6 @@ Generadas el 2026-09-21 20:09:09.
 | 12 | 12-consumo-de-recursos.txt | CPU, memoria y red por contenedor |
 | 13 | 13-tolerancia-a-fallos.txt | La caída de un microservicio no afecta a los demás |
 | 14 | 14-pruebas-de-humo.txt | Resultado de las 18 pruebas automáticas |
+| 15 | 15-repositorio-y-ci.txt | Historial del repositorio, sincronía con GitHub e integración continua |
+| 16 | 16-pruebas-por-tipo.txt | Pruebas unitarias, de seguridad y de rendimiento, con la línea base medida |
+| — | informes/ | Reporte HTML de la ejecución, los cuatro informes JUnit y la línea base |

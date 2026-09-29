@@ -1,15 +1,15 @@
 ============================================================
  EVIDENCIA 05 — imagenes construidas
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-21 20:09:09
+ Generada: 2026-09-28 21:37:03
 ============================================================
 
 REPOSITORY                          TAG         SIZE        <no value>
-localhost/chocolate-diego/gateway   dev         49.7 MB     19 hours ago
-localhost/chocolate-diego/pagos     dev         173 MB      20 hours ago
-localhost/chocolate-diego/auth      dev         173 MB      20 hours ago
-localhost/chocolate-diego/catalogo  dev         173 MB      20 hours ago
-localhost/chocolate-diego/pedidos   dev         173 MB      20 hours ago
-localhost/chocolate-diego/base      dev         173 MB      20 hours ago
-localhost/chocolate-diego/web       dev         49.7 MB     25 hours ago
-localhost/chocolate-diego/app       dev         176 MB      25 hours ago
+localhost/chocolate-diego/gateway   dev         49.7 MB     7 days ago
+localhost/chocolate-diego/pagos     dev         173 MB      7 days ago
+localhost/chocolate-diego/auth      dev         173 MB      7 days ago
+localhost/chocolate-diego/catalogo  dev         173 MB      7 days ago
+localhost/chocolate-diego/pedidos   dev         173 MB      7 days ago
+localhost/chocolate-diego/base      dev         173 MB      7 days ago
+localhost/chocolate-diego/web       dev         49.7 MB     8 days ago
+localhost/chocolate-diego/app       dev         176 MB      8 days ago

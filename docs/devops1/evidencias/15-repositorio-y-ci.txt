@@ -1,0 +1,80 @@
+============================================================
+ EVIDENCIA 15 — repositorio y ci
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-28 21:37:03
+============================================================
+
+--- Remoto configurado
+origin	git@github.com:Ricardo16X/chocolateria-diego.git (fetch)
+origin	git@github.com:Ricardo16X/chocolateria-diego.git (push)
+
+--- Rama actual y ramas conocidas
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+--- Historial (todos los commits)
+cc982b4  2026-09-21  Ricardo16X  chore: excluir el historial local de tinker (psysh), no es parte del proyecto
+f964fa0  2026-09-21  Ricardo16X  feat: infraestructura de microservicios y aplicacion Laravel completas (DEVOPS 1)
+
+--- Sincronia con el remoto
+HEAD y origin/main apuntan al mismo commit: cc982b4
+
+--- Estado del arbol de trabajo
+ M .github/workflows/ci.yml
+ M Makefile
+ M azure-pipelines.yml
+ M docs/devops1/documento-devops1.md
+ M docs/devops1/evidencias/01-version-de-docker.txt
+ M docs/devops1/evidencias/02-composicion-validada.txt
+ M docs/devops1/evidencias/03-construccion-de-imagenes.txt
+ M docs/devops1/evidencias/04-servicios-en-ejecucion.txt
+ M docs/devops1/evidencias/05-imagenes-construidas.txt
+ M docs/devops1/evidencias/06-dominio-de-cada-servicio.txt
+ M docs/devops1/evidencias/07-registros-por-servicio.txt
+ M docs/devops1/evidencias/08-red-interna.txt
+ M docs/devops1/evidencias/09-volumenes.txt
+ M docs/devops1/evidencias/10-enrutamiento-por-dominio.txt
+ M docs/devops1/evidencias/11-verificacion-de-esquema.txt
+ M docs/devops1/evidencias/12-consumo-de-recursos.txt
+ M docs/devops1/evidencias/13-tolerancia-a-fallos.txt
+ M docs/devops1/evidencias/14-pruebas-de-humo.txt
+ M docs/devops1/evidencias/README.md
+ M scripts/evidencias.sh
+ D src/tests/Feature/ExampleTest.php
+ D src/tests/Unit/ExampleTest.php
+ M tests/README.md
+ M tests/casos/casos-de-prueba-azure.csv
+?? docs/devops1/casos-de-prueba.md
+?? docs/devops1/evidencias/15-repositorio-y-ci.txt
+?? docs/devops1/evidencias/16-pruebas-por-tipo.txt
+?? docs/devops1/plan-de-pruebas.md
+?? docs/nube/
+?? scripts/reporte-pruebas.py
+?? src/tests/Feature/CertificadorSimuladoTest.php
+?? src/tests/Unit/ExcepcionNegocioTest.php
+?? src/tests/Unit/ModelosContraEsquemaTest.php
+?? src/tests/Unit/TraduceErroresDeProcedimientoTest.php
+?? tests/rendimiento/
+?? tests/seguridad/
+?? tests/unitarias/pruebas-unitarias.sh
+
+Nota: los archivos de docs/devops1/evidencias/ aparecen aqui porque
+este mismo script los acaba de reescribir. Se confirman en el commit
+siguiente a la captura.
+
+--- Archivos contados por git
+Archivos versionados: 203
+
+--- Integracion continua definida en el repositorio
+.github/workflows/ci.yml         99 lineas
+azure-pipelines.yml              272 lineas
+
+--- Etapas del pipeline de Azure Pipelines
+    - stage: Construccion
+    - stage: Pruebas
+    - stage: Despliegue
+
+--- Trabajos de GitHub Actions
+    revision:
+    pruebas:

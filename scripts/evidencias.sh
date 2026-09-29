@@ -17,6 +17,15 @@ FECHA="$(date '+%Y-%m-%d %H:%M:%S')"
 cd "$RAIZ" || exit 1
 mkdir -p "$DESTINO"
 
+# Quita las secuencias de color ANSI y el aviso del proveedor externo de
+# compose, para que la evidencia se lea igual en un editor de texto que en la
+# terminal. Con Docker Engine ese aviso no existe y el filtro no hace nada.
+limpiar_salida() {
+    sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' \
+        -e '/Executing external compose provider/d' \
+        -e '/how to disable this message/d'
+}
+
 capturar() {
     local numero="$1" titulo="$2"; shift 2
     local n; n=$(printf '%02d' "$numero")
@@ -27,7 +36,7 @@ capturar() {
         echo " Generada: ${FECHA}"
         echo "============================================================"
         echo
-        "$@" 2>&1
+        "$@" 2>&1 | limpiar_salida
     } > "${DESTINO}/${n}-${titulo}.txt"
     echo "  [${n}] ${titulo}"
 }
@@ -112,6 +121,87 @@ resiliencia() {
     echo "La puerta de enlace no se reinicio: resuelve los nombres en cada peticion."
 }
 
+# El repositorio en si es evidencia: historial, ramas, sincronia con el remoto
+# y los dos archivos de integracion continua que lo respaldan.
+repositorio() {
+    echo "--- Remoto configurado"
+    git remote -v
+    echo
+    echo "--- Rama actual y ramas conocidas"
+    git branch -a
+    echo
+    echo "--- Historial (todos los commits)"
+    git log --pretty=format:'%h  %ad  %an  %s' --date=short
+    echo
+    echo
+    echo "--- Sincronia con el remoto"
+    local local_hash remoto_hash
+    local_hash=$(git rev-parse --short HEAD 2>/dev/null)
+    remoto_hash=$(git rev-parse --short origin/main 2>/dev/null)
+    if [ -z "$remoto_hash" ]; then
+        echo "No hay referencia local de origin/main (falta git fetch)."
+    elif [ "$local_hash" = "$remoto_hash" ]; then
+        echo "HEAD y origin/main apuntan al mismo commit: ${local_hash}"
+    else
+        echo "HEAD=${local_hash}  origin/main=${remoto_hash}"
+        printf 'Commits locales sin subir: %s\n' \
+            "$(git rev-list --count origin/main..HEAD 2>/dev/null)"
+    fi
+    echo
+    echo "--- Estado del arbol de trabajo"
+    if [ -z "$(git status --porcelain)" ]; then
+        echo "Limpio: no hay cambios sin confirmar."
+    else
+        git status --short
+        echo
+        echo "Nota: los archivos de docs/devops1/evidencias/ aparecen aqui porque"
+        echo "este mismo script los acaba de reescribir. Se confirman en el commit"
+        echo "siguiente a la captura."
+    fi
+    echo
+    echo "--- Archivos contados por git"
+    printf 'Archivos versionados: %s\n' "$(git ls-files | wc -l)"
+    echo
+    echo "--- Integracion continua definida en el repositorio"
+    for f in .github/workflows/ci.yml azure-pipelines.yml; do
+        if [ -f "$f" ]; then
+            printf '%-32s %s lineas\n' "$f" "$(wc -l < "$f")"
+        else
+            printf '%-32s NO EXISTE\n' "$f"
+        fi
+    done
+    echo
+    echo "--- Etapas del pipeline de Azure Pipelines"
+    grep -E '^\s+- stage:' azure-pipelines.yml | sed 's/^/  /'
+    echo
+    echo "--- Trabajos de GitHub Actions"
+    awk '/^jobs:/{dentro=1; next}
+         dentro && /^[a-z]/{dentro=0}
+         dentro && /^  [a-z_-]+:[[:space:]]*$/{print "  " $0}' \
+        .github/workflows/ci.yml
+}
+
+# Las otras tres suites del plan de pruebas. La de humo ya queda capturada en
+# la evidencia 14; aqui van unitarias, seguridad y rendimiento, y al final el
+# reporte HTML que une los cuatro informes JUnit.
+pruebas_por_tipo() {
+    echo "--- Pruebas unitarias (PHPUnit, casos U01 a U17)"
+    bash tests/unitarias/pruebas-unitarias.sh
+    echo
+    echo "--- Pruebas de seguridad (casos S01 a S11)"
+    bash tests/seguridad/pruebas-seguridad.sh
+    echo
+    echo "--- Pruebas de rendimiento (casos R01 a R05)"
+    bash tests/rendimiento/pruebas-rendimiento.sh
+    echo
+    echo "--- Linea base de rendimiento medida"
+    cat tests/resultados/linea-base-rendimiento.txt 2>/dev/null \
+        || echo "No se genero la linea base."
+    echo
+    echo "--- Reporte HTML consolidado de las cuatro suites"
+    python3 scripts/reporte-pruebas.py
+}
+
 # --- Captura -----------------------------------------------------------------
 
 echo "Generando evidencias en ${DESTINO}"
@@ -132,6 +222,43 @@ capturar 12 "consumo-de-recursos"        docker stats --no-stream \
     --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"
 capturar 13 "tolerancia-a-fallos"        resiliencia
 capturar 14 "pruebas-de-humo"            bash tests/humo/pruebas-humo.sh
+capturar 15 "repositorio-y-ci"           repositorio
+capturar 16 "pruebas-por-tipo"           pruebas_por_tipo
+
+# --- Informes de ejecucion ------------------------------------------------
+# tests/resultados/ esta en .gitignore por ser salida generada, pero el reporte
+# de ejecucion y los informes JUnit son entregables: su copia vive aqui para
+# viajar con el repositorio.
+INFORMES="${DESTINO}/informes"
+mkdir -p "$INFORMES"
+copiados=0
+for f in "${RAIZ}/tests/resultados/reporte-de-pruebas.html" \
+         "${RAIZ}/tests/resultados/linea-base-rendimiento.txt" \
+         "${RAIZ}"/tests/resultados/resultados-*.xml; do
+    [ -f "$f" ] || continue
+    cp "$f" "$INFORMES/" && copiados=$((copiados + 1))
+done
+echo "  [--] informes de ejecucion copiados a evidencias/informes/ (${copiados} archivos)"
+
+cat > "${INFORMES}/README.md" <<INFORMES_INDICE
+# Informes de ejecucion de pruebas
+
+Copia de \`tests/resultados/\`, generada el ${FECHA} por
+\`scripts/evidencias.sh\`. La carpeta original esta en \`.gitignore\` por ser
+salida generada; esta copia se versiona porque el reporte de ejecucion es un
+entregable de la entrega.
+
+| Archivo | Contenido |
+|---|---|
+| reporte-de-pruebas.html | Reporte consolidado de las cuatro suites. Se abre en cualquier navegador, sin conexion |
+| resultados-unitarias.xml | Informe JUnit de PHPUnit, casos U01 a U17 |
+| resultados-humo.xml | Informe JUnit de sistema e integracion, casos H01 a H18 |
+| resultados-seguridad.xml | Informe JUnit de seguridad, casos S01 a S11 |
+| resultados-rendimiento.xml | Informe JUnit de rendimiento, casos R01 a R05 |
+| linea-base-rendimiento.txt | Mediciones crudas de latencia y memoria |
+
+Para regenerarlos: \`make probar-todo\` y luego \`make evidencias\`.
+INFORMES_INDICE
 
 cat > "${DESTINO}/README.md" <<INDICE
 # Evidencias técnicas — Entrega DEVOPS 1
@@ -156,6 +283,9 @@ Generadas el ${FECHA}.
 | 12 | 12-consumo-de-recursos.txt | CPU, memoria y red por contenedor |
 | 13 | 13-tolerancia-a-fallos.txt | La caída de un microservicio no afecta a los demás |
 | 14 | 14-pruebas-de-humo.txt | Resultado de las 18 pruebas automáticas |
+| 15 | 15-repositorio-y-ci.txt | Historial del repositorio, sincronía con GitHub e integración continua |
+| 16 | 16-pruebas-por-tipo.txt | Pruebas unitarias, de seguridad y de rendimiento, con la línea base medida |
+| — | informes/ | Reporte HTML de la ejecución, los cuatro informes JUnit y la línea base |
 INDICE
 
 echo

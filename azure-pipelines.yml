@@ -1,15 +1,27 @@
 # =============================================================================
 # Artesanal Chocolate Diego — Azure Pipelines
 #
-# Dos etapas:
+# Tres etapas:
 #   Construccion  construye la imagen base y los cuatro microservicios, y
 #                 valida la composicion
-#   Pruebas       levanta el sistema completo, ejecuta las 18 pruebas de humo
-#                 y publica los resultados en la pestana Tests de Azure DevOps
+#   Pruebas       levanta el sistema completo, ejecuta las cuatro suites del
+#                 plan de pruebas (unitarias, humo/integracion/sistema,
+#                 seguridad y rendimiento) y publica los resultados en la
+#                 pestana Tests de Azure DevOps, mas el reporte HTML como
+#                 artefacto
+#   Despliegue    publica las imagenes en Azure Container Registry y actualiza
+#                 el Web App multicontenedor de Microsoft Azure (solo en main)
+#
+# Azure DevOps (esta herramienta) no es Microsoft Azure (el proveedor de nube
+# donde vive la aplicacion). Azure DevOps orquesta el pipeline; Microsoft Azure
+# aloja el Resource Group, el Azure Container Registry, el App Service y el
+# servidor administrado de MySQL que la etapa Despliegue actualiza. Ver
+# docs/nube/despliegue-azure.md para la lista de recursos que hay que crear
+# una sola vez en el portal de Azure antes de que esta etapa pueda ejecutarse.
 #
 # Cada etapa corre en un agente limpio, por eso Pruebas vuelve a construir las
 # imagenes. Es mas lento que compartirlas, pero no requiere configurar un
-# registro de contenedores.
+# registro de contenedores hasta la etapa de Despliegue.
 #
 # Para crear el pipeline: Pipelines > New pipeline > GitHub (o Azure Repos)
 # > seleccionar el repositorio > Existing Azure Pipelines YAML file >
@@ -68,11 +80,11 @@ stages:
 
   # ===========================================================================
   - stage: Pruebas
-    displayName: Pruebas de humo
+    displayName: Pruebas unitarias, sistema, seguridad y rendimiento
     dependsOn: Construccion
     jobs:
       - job: Probar
-        displayName: Levantar el sistema y ejecutar las pruebas
+        displayName: Levantar el sistema y ejecutar las cuatro suites
         timeoutInMinutes: 40
         steps:
           - checkout: self
@@ -112,25 +124,62 @@ stages:
               docker compose -f docker-compose.yml ps
             displayName: Estado de los contenedores
 
-          - script: bash tests/humo/pruebas-humo.sh
-            displayName: Ejecutar pruebas de humo
+          # Las cuatro suites del plan de pruebas, cada una en su propio
+          # paso para que la ejecucion muestre cual fallo sin abrir los
+          # registros. continueOnError deja que sigan las demas: el veredicto
+          # lo dan las tareas PublishTestResults y el reporte final.
+          - script: bash tests/unitarias/pruebas-unitarias.sh
+            displayName: Pruebas unitarias (PHPUnit)
+            continueOnError: true
             env:
               APP_VERSION: $(APP_VERSION)
 
+          - script: bash tests/humo/pruebas-humo.sh
+            displayName: Pruebas de humo, integracion y sistema
+            continueOnError: true
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - script: bash tests/seguridad/pruebas-seguridad.sh
+            displayName: Pruebas de seguridad
+            continueOnError: true
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          - script: bash tests/rendimiento/pruebas-rendimiento.sh
+            displayName: Pruebas de rendimiento
+            continueOnError: true
+            env:
+              APP_VERSION: $(APP_VERSION)
+
+          # Se genera antes de publicar para que el artefacto incluya el
+          # reporte incluso cuando algo fallo: esa es la captura de la
+          # ejecucion fallida que pide la entrega.
+          - script: python3 scripts/reporte-pruebas.py
+            displayName: Generar el reporte HTML de pruebas
+            condition: always()
+            continueOnError: true
+
+          # Un solo comodin recoge los cuatro informes JUnit y los presenta
+          # juntos en la pestana Tests, con el identificador de cada caso
+          # (U01, H01, S01, R01) tal como aparece en los casos de prueba.
           - task: PublishTestResults@2
             displayName: Publicar resultados de prueba
             condition: always()
             inputs:
               testResultsFormat: JUnit
-              testResultsFiles: tests/resultados/resultados-humo.xml
-              testRunTitle: Pruebas de humo — Artesanal Chocolate Diego
+              testResultsFiles: tests/resultados/resultados-*.xml
+              mergeTestResults: true
+              testRunTitle: Plan de pruebas — Artesanal Chocolate Diego
               failTaskOnFailedTests: true
 
           - script: |
               mkdir -p $(Build.ArtifactStagingDirectory)/evidencias
               docker compose -f docker-compose.yml ps > $(Build.ArtifactStagingDirectory)/evidencias/contenedores.txt 2>&1
               docker compose -f docker-compose.yml logs --tail=100 > $(Build.ArtifactStagingDirectory)/evidencias/registros.txt 2>&1
-              cp tests/resultados/resultados-humo.xml $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
+              cp tests/resultados/resultados-*.xml $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
+              cp tests/resultados/reporte-de-pruebas.html $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
+              cp tests/resultados/linea-base-rendimiento.txt $(Build.ArtifactStagingDirectory)/evidencias/ 2>/dev/null || true
             displayName: Reunir evidencias
             condition: always()
 
@@ -144,3 +193,80 @@ stages:
           - script: docker compose -f docker-compose.yml down -v
             displayName: Detener los servicios
             condition: always()
+
+  # ===========================================================================
+  # Requiere, creados una sola vez en el portal de Microsoft Azure (no en
+  # Azure DevOps): un Resource Group, un Azure Container Registry, un App
+  # Service Plan Linux con un Web App multicontenedor, y una conexion de
+  # servicio en Azure DevOps (Project Settings > Service connections) que
+  # apunte a esa suscripcion. Ver docs/nube/despliegue-azure.md.
+  #
+  # Las cuatro variables de abajo (AZURE_SERVICE_CONNECTION, ACR_NOMBRE,
+  # RESOURCE_GROUP, APP_SERVICE_NOMBRE) se definen en Azure DevOps como grupo
+  # de variables (Pipelines > Library), nunca escritas aqui.
+  # ===========================================================================
+  - stage: Despliegue
+    displayName: Despliegue a Microsoft Azure
+    dependsOn: Pruebas
+    condition: |
+      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: Desplegar
+        displayName: Publicar en Azure App Service
+        environment: produccion
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - script: cp .env.example .env
+                  displayName: Preparar variables de entorno
+
+                - script: |
+                    docker build -f docker/base/Dockerfile \
+                      -t chocolate-diego/base:$(APP_VERSION) .
+                    docker compose build
+                  displayName: Reconstruir imagenes para publicar
+                  env:
+                    APP_VERSION: $(APP_VERSION)
+
+                - task: AzureCLI@2
+                  displayName: Publicar imagenes en Azure Container Registry
+                  inputs:
+                    azureSubscription: $(AZURE_SERVICE_CONNECTION)
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      set -euo pipefail
+                      az acr login --name $(ACR_NOMBRE)
+                      for servicio in auth catalogo pedidos pagos gateway; do
+                        origen="chocolate-diego/${servicio}:$(APP_VERSION)"
+                        destino="$(ACR_NOMBRE).azurecr.io/chocolate-diego/${servicio}"
+                        docker tag "$origen" "${destino}:$(APP_VERSION)"
+                        docker tag "$origen" "${destino}:latest"
+                        docker push "${destino}:$(APP_VERSION)"
+                        docker push "${destino}:latest"
+                      done
+
+                - task: AzureCLI@2
+                  displayName: Actualizar el Web App multicontenedor
+                  inputs:
+                    azureSubscription: $(AZURE_SERVICE_CONNECTION)
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      set -euo pipefail
+                      sed -E 's#chocolate-diego/([a-z]+):\$\{APP_VERSION:-dev\}#$(ACR_NOMBRE).azurecr.io/chocolate-diego/\1:$(APP_VERSION)#g' \
+                        docker-compose.yml > docker-compose.produccion.yml
+                      az webapp config container set \
+                        --name $(APP_SERVICE_NOMBRE) \
+                        --resource-group $(RESOURCE_GROUP) \
+                        --multicontainer-config-type COMPOSE \
+                        --multicontainer-config-file docker-compose.produccion.yml
+                      az webapp restart \
+                        --name $(APP_SERVICE_NOMBRE) \
+                        --resource-group $(RESOURCE_GROUP)
+                      echo "Publicado: https://$(APP_SERVICE_NOMBRE).azurewebsites.net"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Artesanal Chocolate Diego" tests="18" failures="0" time="18">
+  <testsuite name="Pruebas de humo" tests="18" failures="0" errors="0" time="18" timestamp="2026-09-29T03:37:41">
+    <testcase classname="humo.infraestructura" name="H01 Los nueve contenedores estan en ejecucion" time="0.40"/>
+    <testcase classname="humo.infraestructura" name="H02 La base de datos reporta estado saludable" time="0.04"/>
+    <testcase classname="humo.infraestructura" name="H03 Redis responde a PING" time="0.74"/>
+    <testcase classname="humo.infraestructura" name="H04 La puerta de enlace responde en /estado" time="0.02"/>
+    <testcase classname="humo.microservicios" name="H05 La puerta de enlace enruta /api/auth a auth" time="0.03"/>
+    <testcase classname="humo.microservicios" name="H06 La puerta de enlace enruta /api/catalogo a catalogo" time="0.03"/>
+    <testcase classname="humo.microservicios" name="H07 La puerta de enlace enruta /api/pedidos a pedidos" time="0.03"/>
+    <testcase classname="humo.microservicios" name="H08 La puerta de enlace enruta /api/pagos a pagos" time="0.03"/>
+    <testcase classname="humo.microservicios" name="H09 Los microservicios no publican puertos al exterior" time="0.16"/>
+    <testcase classname="humo.microservicios" name="H10 Los cuatro microservicios tienen sus extensiones" time="3.06"/>
+    <testcase classname="humo.microservicios" name="H11 La caida de pagos no afecta a auth y se recupera" time="8.58"/>
+    <testcase classname="humo.base_datos" name="H12 El esquema corresponde al Octavo Documento" time="0.93"/>
+    <testcase classname="humo.base_datos" name="H13 Los catalogos base estan cargados" time="0.74"/>
+    <testcase classname="humo.flujo_venta" name="H14 Alta de producto, lote y entrada de inventario" time="0.76"/>
+    <testcase classname="humo.flujo_venta" name="H15 Venta a consumidor final descuenta y genera DTE" time="0.75"/>
+    <testcase classname="humo.flujo_venta" name="H16 La venta queda registrada en la bitacora" time="0.77"/>
+    <testcase classname="humo.flujo_venta" name="H17 La anulacion restituye la existencia y anula el DTE" time="0.74"/>
+    <testcase classname="humo.flujo_venta" name="H18 El kardex cuadra despues del ciclo completo" time="0.74"/>
+  </testsuite>
+</testsuites>

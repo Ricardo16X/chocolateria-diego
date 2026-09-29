@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Artesanal Chocolate Diego" tests="11" failures="0" time="9">
+  <testsuite name="Pruebas de seguridad" tests="11" failures="0" errors="0" time="9" timestamp="2026-09-29T03:37:53">
+    <testcase classname="seguridad.acceso" name="S01 Las rutas protegidas no responden sin sesion" time="0.04"/>
+    <testcase classname="seguridad.acceso" name="S02 Un POST sin token CSRF es rechazado con 419" time="0.02"/>
+    <testcase classname="seguridad.acceso" name="S03 El ingreso con credenciales validas funciona" time="0.10"/>
+    <testcase classname="seguridad.acceso" name="S04 Una cuenta bloqueada no inicia sesion" time="0.25"/>
+    <testcase classname="seguridad.acceso" name="S05 Sin el permiso ventas.registrar el punto de venta da 403" time="0.13"/>
+    <testcase classname="seguridad.plataforma" name="S06 La puerta de enlace no revela la version del servidor" time="0.02"/>
+    <testcase classname="seguridad.plataforma" name="S07 La puerta de enlace envia las cabeceras de seguridad" time="0.03"/>
+    <testcase classname="seguridad.plataforma" name="S08 Los microservicios no corren como root" time="3.04"/>
+    <testcase classname="seguridad.secretos" name="S09 La aplicacion no se conecta a MySQL como root" time="0.75"/>
+    <testcase classname="seguridad.secretos" name="S10 Todas las contrasenas son hash bcrypt de 60 caracteres" time="0.76"/>
+    <testcase classname="seguridad.secretos" name="S11 Las imagenes no llevan el archivo .env horneado" time="0.68"/>
+  </testsuite>
+</testsuites>

@@ -1,289 +1,316 @@
 ============================================================
  EVIDENCIA 07 — registros por servicio
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-21 20:09:09
+ Generada: 2026-09-28 21:37:03
 ============================================================
 
-[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
 
-[0m[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:35] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:35] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:35] NOTICE: fpm is running, pid 1[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:35] NOTICE: ready to handle connections[0m
-[1;36m[pagos]     |[0m [37m10.89.0.11 -  21/Sep/2026:19:51:52 -0600 "GET /index.php" 200[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:56] NOTICE: Finishing ...[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:51:56] NOTICE: exiting, bye-bye![0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: fpm is running, pid 1[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:52:02] NOTICE: ready to handle connections[0m
-[1;36m[pagos]     |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:04 -0600 "GET /index.php" 200[0m
-[1;36m[pagos]     |[0m [37m10.89.0.11 -  21/Sep/2026:19:57:53 -0600 "GET /index.php" 200[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:57:57] NOTICE: Finishing ...[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:57:57] NOTICE: exiting, bye-bye![0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: fpm is running, pid 1[0m
-[1;36m[pagos]     |[0m [37m[21-Sep-2026 19:58:03] NOTICE: ready to handle connections[0m
-[1;36m[pagos]     |[0m [37m10.89.0.11 -  21/Sep/2026:19:58:05 -0600 "GET /index.php" 200[0m
-[1;36m[pagos]     |[0m [37m[pagos] Esperando a MySQL en db:3306...[0m
-[1;36m[pagos]     |[0m [37m[pagos] MySQL disponible.[0m
-[1;36m[pagos]     |[0m [37m[pagos] Esperando a Redis en cache:6379...[0m
-[1;36m[pagos]     |[0m [37m[pagos] Redis disponible.[0m
-[1;36m[pagos]     |[0m [37m[0m
-[1;36m[pagos]     |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;36m[pagos]     |[0m [37m[0m
-[1;36m[pagos]     |[0m [37m[pagos] Iniciando: php-fpm[0m
-[1;36m[pagos]     |[0m [37m[pagos] Esperando a MySQL en db:3306...[0m
-[1;36m[pagos]     |[0m [37m[pagos] MySQL disponible.[0m
-[1;36m[pagos]     |[0m [37m[pagos] Esperando a Redis en cache:6379...[0m
-[1;36m[pagos]     |[0m [37m[pagos] Redis disponible.[0m
-[1;36m[pagos]     |[0m [37m[0m
-[1;36m[pagos]     |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;36m[pagos]     |[0m [37m[0m
-[1;36m[pagos]     |[0m [37m[pagos] Iniciando: php-fpm[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 524288:524288[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker processes[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 21[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 22[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 23[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 24[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 25[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 26[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 27[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:51:35 [notice] 1#1: start worker process 28[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:52:01 [error] 27#27: *15 pagos could not be resolved (3: Host not found), client: 10.89.0.11, server: _, request: "GET /api/pagos/salud HTTP/1.1", host: "localhost:8080"[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:52:02 [error] 21#21: *20 connect() failed (111: Connection refused) while connecting to upstream, client: 10.89.0.11, server: _, request: "GET /api/pagos/salud HTTP/1.1", upstream: "fastcgi://10.89.0.12:9000", host: "localhost:8080"[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:58:02 [error] 22#22: *67 pagos could not be resolved (3: Host not found), client: 10.89.0.11, server: _, request: "GET /api/pagos/salud HTTP/1.1", host: "localhost:8080"[0m
-[1;32m[gateway]   |[0m [37m2026/09/22 01:58:03 [error] 22#22: *70 connect() failed (111: Connection refused) while connecting to upstream, client: 10.89.0.11, server: _, request: "GET /api/pagos/salud HTTP/1.1", upstream: "fastcgi://10.89.0.15:9000", host: "localhost:8080"[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:51:52 +0000] "GET /api/auth/salud HTTP/1.1" 200 servicio=auth tiempo=0.183[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:51:52 +0000] "GET /api/catalogo/salud HTTP/1.1" 200 servicio=catalogo tiempo=0.184[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:51:52 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.177[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:51:52 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.177[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:01 +0000] "GET /api/pagos/salud HTTP/1.1" 502 servicio=pagos tiempo=1.755[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:01 +0000] "GET /api/auth/salud HTTP/1.1" 200 servicio=auth tiempo=0.018[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:02 +0000] "GET /api/pagos/salud HTTP/1.1" 502 servicio=pagos tiempo=0.001[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:04 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.189[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "GET /ingreso HTTP/1.1" 200 servicio=catalogo tiempo=0.036[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "POST /ingreso HTTP/1.1" 302 servicio=catalogo tiempo=0.095[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "GET /punto-venta HTTP/1.1" 200 servicio=catalogo tiempo=0.027[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "POST /punto-venta/turno/abrir HTTP/1.1" 302 servicio=catalogo tiempo=0.021[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "GET /punto-venta?q=CHOC-F6 HTTP/1.1" 200 servicio=catalogo tiempo=0.016[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "POST /punto-venta/carrito HTTP/1.1" 302 servicio=catalogo tiempo=0.010[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "GET /punto-venta HTTP/1.1" 200 servicio=catalogo tiempo=0.013[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:52:31 +0000] "POST /punto-venta/confirmar HTTP/1.1" 500 servicio=catalogo tiempo=0.053[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:53:31 +0000] "GET /punto-venta HTTP/1.1" 200 servicio=catalogo tiempo=0.018[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:53:31 +0000] "POST /punto-venta/confirmar HTTP/1.1" 302 servicio=catalogo tiempo=0.029[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:57:53 +0000] "GET /api/auth/salud HTTP/1.1" 200 servicio=auth tiempo=0.018[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:57:53 +0000] "GET /api/catalogo/salud HTTP/1.1" 200 servicio=catalogo tiempo=0.014[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:57:53 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.018[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:57:53 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.018[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:58:02 +0000] "GET /api/pagos/salud HTTP/1.1" 502 servicio=pagos tiempo=2.055[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:58:02 +0000] "GET /api/auth/salud HTTP/1.1" 200 servicio=auth tiempo=0.014[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:58:03 +0000] "GET /api/pagos/salud HTTP/1.1" 502 servicio=pagos tiempo=0.001[0m
-[1;32m[gateway]   |[0m [37m10.89.0.11 [22/Sep/2026:01:58:05 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.175[0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m   INFO  Processing jobs from the [fel,correo,default] queues.  [0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m[queue] Esperando a MySQL en db:3306...[0m
-[1;34m[queue]     |[0m [37m[queue] MySQL disponible.[0m
-[1;34m[queue]     |[0m [37m[queue] Esperando a Redis en cache:6379...[0m
-[1;34m[queue]     |[0m [37m[queue] Redis disponible.[0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m[queue] Iniciando: php artisan queue:listen redis --queue=fel,correo,default --tries=3 --timeout=90[0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m   INFO  Processing jobs from the [fel,correo,default] queues.  [0m
-[1;34m[queue]     |[0m [37m[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:53:32 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:53:32 App\Jobs\CertificarDocumentoFel ........... 25.56ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:54:00 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:54:00 App\Jobs\CertificarDocumentoFel ........... 25.96ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:54:19 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:54:19 App\Jobs\CertificarDocumentoFel ........... 25.97ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:55:22 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:55:22 App\Jobs\CertificarDocumentoFel ........... 13.93ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:55:51 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:55:51 App\Jobs\CertificarDocumentoFel ........... 13.53ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:22 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:22 App\Jobs\CertificarDocumentoFel ........... 13.23ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:45 App\Jobs\EnviarNotificacion .................... RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:45 App\Jobs\EnviarNotificacion ............... 83.67ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:51 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:56:51 App\Jobs\CertificarDocumentoFel ........... 14.83ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:57:10 App\Jobs\EnviarNotificacion .................... RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:57:10 App\Jobs\EnviarNotificacion ............... 71.18ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:57:39 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:57:39 App\Jobs\CertificarDocumentoFel ........... 13.25ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:58:10 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:58:10 App\Jobs\CertificarDocumentoFel ........... 15.63ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:58:39 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:58:39 App\Jobs\CertificarDocumentoFel ........... 14.91ms DONE[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:59:08 App\Jobs\CertificarDocumentoFel ................ RUNNING[0m
-[1;34m[queue]     |[0m [37m  2026-09-21 19:59:08 App\Jobs\CertificarDocumentoFel ........... 16.43ms DONE[0m
-[1;36m[mail]      |[0m [37mtime="2026/09/22 01:51:23" level=info msg="[smtpd] enabling any authentication (insecure)"[0m
-[1;36m[mail]      |[0m [37mtime="2026/09/22 01:51:23" level=info msg="[smtpd] starting on [::]:1025 (no encryption)"[0m
-[1;36m[mail]      |[0m [37mtime="2026/09/22 01:51:23" level=warning msg="[http] listening on [::]:8025 without --ui-auth-file or --allowed-hosts; the API is reachable from any host that can route to this interface"[0m
-[1;36m[mail]      |[0m [37mtime="2026/09/22 01:51:23" level=info msg="[http] starting on [::]:8025"[0m
-[1;36m[mail]      |[0m [37mtime="2026/09/22 01:51:23" level=info msg="[http] accessible via http://localhost:8025/"[0m
-[1;33m[auth]      |[0m [37m[auth] Esperando a MySQL en db:3306...[0m
-[1;33m[auth]      |[0m [37m[auth] MySQL disponible.[0m
-[1;33m[auth]      |[0m [37m[auth] Esperando a Redis en cache:6379...[0m
-[1;33m[auth]      |[0m [37m[auth] Redis disponible.[0m
-[1;33m[auth]      |[0m [37m[0m
-[1;33m[auth]      |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;33m[auth]      |[0m [37m[0m
-[1;33m[auth]      |[0m [37m[auth] Iniciando: php-fpm[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: fpm is running, pid 1[0m
-[1;33m[auth]      |[0m [37m[21-Sep-2026 19:51:34] NOTICE: ready to handle connections[0m
-[1;33m[auth]      |[0m [37m10.89.0.11 -  21/Sep/2026:19:51:52 -0600 "GET /index.php" 200[0m
-[1;33m[auth]      |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:01 -0600 "GET /index.php" 200[0m
-[1;33m[auth]      |[0m [37m10.89.0.11 -  21/Sep/2026:19:57:53 -0600 "GET /index.php" 200[0m
-[1;33m[auth]      |[0m [37m10.89.0.11 -  21/Sep/2026:19:58:02 -0600 "GET /index.php" 200[0m
-[1;33m[cache]     |[0m [37m1:C 22 Sep 2026 01:51:23.292 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.[0m
-[1;33m[cache]     |[0m [37m1:C 22 Sep 2026 01:51:23.292 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo[0m
-[1;33m[cache]     |[0m [37m1:C 22 Sep 2026 01:51:23.292 * Redis version=7.4.11, bits=64, commit=00000000, modified=0, pid=1, just started[0m
-[1;33m[cache]     |[0m [37m1:C 22 Sep 2026 01:51:23.292 * Configuration loaded[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.292 * monotonic clock: POSIX clock_gettime[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.293 * Running mode=standalone, port=6379.[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.294 * Server initialized[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.296 * Creating AOF base file appendonly.aof.1.base.rdb on server start[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.298 * Creating AOF incr file appendonly.aof.1.incr.aof on server start[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:51:23.298 * Ready to accept connections tcp[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:57:39.223 * 100 changes in 300 seconds. Saving...[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:57:39.224 * Background saving started by pid 47[0m
-[1;33m[cache]     |[0m [37m47:C 22 Sep 2026 01:57:39.227 * DB saved on disk[0m
-[1;33m[cache]     |[0m [37m47:C 22 Sep 2026 01:57:39.228 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB[0m
-[1;33m[cache]     |[0m [37m1:M 22 Sep 2026 01:57:39.325 * Background saving terminated with success[0m
-[1;34m[catalogo]  |[0m [37m[catalogo] Esperando a MySQL en db:3306...[0m
-[1;34m[catalogo]  |[0m [37m[catalogo] MySQL disponible.[0m
-[1;34m[catalogo]  |[0m [37m[catalogo] Esperando a Redis en cache:6379...[0m
-[1;34m[catalogo]  |[0m [37m[catalogo] Redis disponible.[0m
-[1;34m[catalogo]  |[0m [37m[0m
-[1;34m[catalogo]  |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;34m[catalogo]  |[0m [37m[0m
-[1;34m[catalogo]  |[0m [37m[catalogo] Iniciando: php-fpm[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: fpm is running, pid 1[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:51:34] NOTICE: ready to handle connections[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:51:52 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "POST /index.php" 302[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "POST /index.php" 302[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "POST /index.php" 302[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m[21-Sep-2026 19:52:31 America/Guatemala] PHP Fatal error:  App\Jobs\CertificarDocumentoFel and Illuminate\Bus\Queueable define the same property ($queue) in the composition of App\Jobs\CertificarDocumentoFel. However, the definition differs and is considered incompatible. Class was composed in /var/www/html/app/Jobs/CertificarDocumentoFel.php on line 24[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:52:31 -0600 "POST /index.php" 500[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:53:31 -0600 "GET /index.php" 200[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:53:31 -0600 "POST /index.php" 302[0m
-[1;34m[catalogo]  |[0m [37m10.89.0.11 -  21/Sep/2026:19:57:53 -0600 "GET /index.php" 200[0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m[scheduler] Iniciando: php artisan schedule:work[0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  Running scheduled tasks every minute.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m  2026-09-21 20:00:00 Running ['artisan' chdiego:expirar-reservas]  146ms DONE[0m
-[1;35m[scheduler] |[0m [37m  ⇂ '/usr/local/bin/php' 'artisan' chdiego:expirar-reservas > '/dev/null' 2>&1  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;35m[scheduler] |[0m [37m   INFO  No scheduled commands are ready to run.  [0m
-[1;35m[scheduler] |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:28.363110Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:28.376086Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: /var/run/mysqld/mysqlx.sock[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:28.376144Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.46'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server - GPL.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/leapseconds' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/tzdata.zi' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37mWarning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:30.772368Z 16 [System] [MY-013172] [Server] Received SHUTDOWN from user root. Shutting down mysqld (Version: 8.0.46).[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:32.234378Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.46)  MySQL Community Server - GPL.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.037976Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.040123Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.46) starting as process 1[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.045913Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.211653Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.665235Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.665265Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.667242Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.681556Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:28-06:00 [Note] [Entrypoint]: Temporary server started.[0m
-[1;32m[db]        |[0m [37m'/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:29-06:00 [Note] [Entrypoint]: Creating database chocolate_diego[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:29-06:00 [Note] [Entrypoint]: Creating user chocolate[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:29-06:00 [Note] [Entrypoint]: Giving user chocolate access to schema chocolate_diego[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:29-06:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/01_esquema.sql[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:30-06:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/02_rutinas.sql[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:30-06:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/03_datos_iniciales.sql[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:30-06:00 [Note] [Entrypoint]: Stopping temporary server[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:32-06:00 [Note] [Entrypoint]: Temporary server stopped[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-21 19:51:32-06:00 [Note] [Entrypoint]: MySQL init process done. Ready for start up.[0m
-[1;32m[db]        |[0m [37m[0m
-[1;32m[db]        |[0m [37m2026-09-22T01:51:33.681649Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.46'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.[0m
-[1;35m[pedidos]   |[0m [37m[pedidos] Esperando a MySQL en db:3306...[0m
-[1;35m[pedidos]   |[0m [37m[pedidos] MySQL disponible.[0m
-[1;35m[pedidos]   |[0m [37m[pedidos] Esperando a Redis en cache:6379...[0m
-[1;35m[pedidos]   |[0m [37m[pedidos] Redis disponible.[0m
-[1;35m[pedidos]   |[0m [37m[0m
-[1;35m[pedidos]   |[0m [37m   INFO  Configuration cache cleared successfully.  [0m
-[1;35m[pedidos]   |[0m [37m[0m
-[1;35m[pedidos]   |[0m [37m[pedidos] Iniciando: php-fpm[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: fpm is running, pid 1[0m
-[1;35m[pedidos]   |[0m [37m[21-Sep-2026 19:51:34] NOTICE: ready to handle connections[0m
-[1;35m[pedidos]   |[0m [37m10.89.0.11 -  21/Sep/2026:19:51:52 -0600 "GET /index.php" 200[0m
-[1;35m[pedidos]   |[0m [37m10.89.0.11 -  21/Sep/2026:19:57:53 -0600 "GET /index.php" 200[0m
+[db]        | 2026-09-28 20:50:14-06:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.46-1.el9 started.
+[db]        | 2026-09-28 20:50:15-06:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+[db]        | 2026-09-28 20:50:15-06:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.46-1.el9 started.
+[db]        | '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+[db]        | 2026-09-29T02:50:15.798170Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+[db]        | 2026-09-29T02:50:15.800093Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.46) starting as process 1
+[db]        | 2026-09-29T02:50:15.808105Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+[db]        | 2026-09-29T02:50:16.029419Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+[db]        | 2026-09-29T02:50:16.253238Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+[db]        | 2026-09-29T02:50:16.253283Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+[db]        | 2026-09-29T02:50:16.256408Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+[db]        | 2026-09-29T02:50:16.281379Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+[db]        | 2026-09-29T02:50:16.281481Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.46'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |   2026-09-28 21:30:00 Running ['artisan' chdiego:expirar-reservas]  177ms DONE
+[scheduler] |   ⇂ '/usr/local/bin/php' 'artisan' chdiego:expirar-reservas > '/dev/null' 2>&1  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[scheduler] |    INFO  No scheduled commands are ready to run.  
+[scheduler] | 
+[queue]     | [queue] Esperando a MySQL en db:3306...
+[queue]     | [queue] MySQL disponible.
+[queue]     | [queue] Esperando a Redis en cache:6379...
+[queue]     | [queue] Redis disponible.
+[queue]     | 
+[queue]     |    INFO  Configuration cache cleared successfully.  
+[queue]     | 
+[queue]     | [queue] Iniciando: php artisan queue:listen redis --queue=fel,correo,default --tries=3 --timeout=90
+[queue]     | 
+[queue]     |    INFO  Processing jobs from the [fel,correo,default] queues.  
+[queue]     | 
+[mail]      | time="2026/09/29 02:50:15" level=info msg="[smtpd] enabling any authentication (insecure)"
+[mail]      | time="2026/09/29 02:50:15" level=warning msg="[http] listening on [::]:8025 without --ui-auth-file or --allowed-hosts; the API is reachable from any host that can route to this interface"
+[mail]      | time="2026/09/29 02:50:15" level=info msg="[smtpd] starting on [::]:1025 (no encryption)"
+[mail]      | time="2026/09/29 02:50:15" level=info msg="[http] starting on [::]:8025"
+[mail]      | time="2026/09/29 02:50:15" level=info msg="[http] accessible via http://localhost:8025/"
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:08 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:17 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:23 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 302
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 302
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "POST /index.php" 419
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "POST /index.php" 302
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "POST /index.php" 302
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "POST /index.php" 302
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "GET /index.php" 403
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "HEAD /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:47 -0600 "HEAD /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[catalogo]  | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[cache]     | 1:C 29 Sep 2026 02:50:15.124 * Configuration loaded
+[cache]     | 1:M 29 Sep 2026 02:50:15.125 * monotonic clock: POSIX clock_gettime
+[cache]     | 1:M 29 Sep 2026 02:50:15.126 * Running mode=standalone, port=6379.
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * Server initialized
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * Reading RDB base file on AOF loading...
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * Loading RDB produced by version 7.4.11
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * RDB age 608332 seconds
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * RDB memory usage when created 0.90 Mb
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * RDB is base AOF
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * Done loading RDB, keys loaded: 0, keys expired: 0.
+[cache]     | 1:M 29 Sep 2026 02:50:15.127 * DB loaded from base file appendonly.aof.1.base.rdb: 0.000 seconds
+[cache]     | 1:M 29 Sep 2026 02:50:15.128 * DB loaded from incr file appendonly.aof.1.incr.aof: 0.001 seconds
+[cache]     | 1:M 29 Sep 2026 02:50:15.128 * DB loaded from append only file: 0.002 seconds
+[cache]     | 1:M 29 Sep 2026 02:50:15.128 * Opening AOF incr file appendonly.aof.1.incr.aof on server start
+[cache]     | 1:M 29 Sep 2026 02:50:15.129 * Ready to accept connections tcp
+[cache]     | 1:M 29 Sep 2026 02:55:16.017 * 100 changes in 300 seconds. Saving...
+[cache]     | 1:M 29 Sep 2026 02:55:16.018 * Background saving started by pid 41
+[cache]     | 41:C 29 Sep 2026 02:55:16.022 * DB saved on disk
+[cache]     | 41:C 29 Sep 2026 02:55:16.022 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+[cache]     | 1:M 29 Sep 2026 02:55:16.119 * Background saving terminated with success
+[cache]     | 1:M 29 Sep 2026 03:13:05.051 * 100 changes in 300 seconds. Saving...
+[cache]     | 1:M 29 Sep 2026 03:13:05.053 * Background saving started by pid 142
+[cache]     | 142:C 29 Sep 2026 03:13:05.060 * DB saved on disk
+[cache]     | 142:C 29 Sep 2026 03:13:05.061 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+[cache]     | 1:M 29 Sep 2026 03:13:05.154 * Background saving terminated with success
+[cache]     | 1:M 29 Sep 2026 03:18:06.096 * 100 changes in 300 seconds. Saving...
+[cache]     | 1:M 29 Sep 2026 03:18:06.097 * Background saving started by pid 171
+[cache]     | 171:C 29 Sep 2026 03:18:06.101 * DB saved on disk
+[cache]     | 171:C 29 Sep 2026 03:18:06.102 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+[cache]     | 1:M 29 Sep 2026 03:18:06.198 * Background saving terminated with success
+[cache]     | 1:M 29 Sep 2026 03:30:32.560 * 100 changes in 300 seconds. Saving...
+[cache]     | 1:M 29 Sep 2026 03:30:32.562 * Background saving started by pid 241
+[cache]     | 241:C 29 Sep 2026 03:30:32.569 * DB saved on disk
+[cache]     | 241:C 29 Sep 2026 03:30:32.570 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+[cache]     | 1:M 29 Sep 2026 03:30:32.663 * Background saving terminated with success
+[cache]     | 1:M 29 Sep 2026 03:35:33.004 * 100 changes in 300 seconds. Saving...
+[cache]     | 1:M 29 Sep 2026 03:35:33.005 * Background saving started by pid 272
+[cache]     | 272:C 29 Sep 2026 03:35:33.009 * DB saved on disk
+[cache]     | 272:C 29 Sep 2026 03:35:33.010 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+[cache]     | 1:M 29 Sep 2026 03:35:33.105 * Background saving terminated with success
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:33:50 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:07 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:23 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pedidos]   | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | [pagos] Esperando a MySQL en db:3306...
+[pagos]     | [pagos] MySQL disponible.
+[pagos]     | [pagos] Esperando a Redis en cache:6379...
+[pagos]     | [pagos] Redis disponible.
+[pagos]     | 
+[pagos]     |    INFO  Configuration cache cleared successfully.  
+[pagos]     | 
+[pagos]     | [pagos] Iniciando: php-fpm
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: fpm is running, pid 1
+[pagos]     | [28-Sep-2026 21:35:33] NOTICE: ready to handle connections
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:34 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[pagos]     | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[auth]      | 10.89.0.11 -  28/Sep/2026:21:35:56 -0600 "GET /index.php" 200
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.051
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.028
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.027
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.027
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.040
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.027
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.040
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.029
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.033
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.020
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.025
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.022
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.031
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.025
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pedidos/salud HTTP/1.1" 200 servicio=pedidos tiempo=0.030
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.025
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.030
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.020
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.029
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.029
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.038
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.029
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.043
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.038
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.054
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.034
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.029
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.026
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.027
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.032
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.035
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.025
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.027
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.026
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.024
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.017
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.017
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.014
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.014
+[gateway]   | 10.89.0.11 [29/Sep/2026:03:35:56 +0000] "GET /api/pagos/salud HTTP/1.1" 200 servicio=pagos tiempo=0.012

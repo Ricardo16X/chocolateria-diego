@@ -1,7 +1,7 @@
 ============================================================
  EVIDENCIA 14 — pruebas de humo
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-21 20:09:09
+ Generada: 2026-09-28 21:37:03
 ============================================================
 
 
@@ -11,30 +11,30 @@
 ================================================================
 
  Infraestructura
-  [32m[PASA][0m  H01  Los nueve contenedores estan en ejecucion
-  [32m[PASA][0m  H02  La base de datos reporta estado saludable
-  [32m[PASA][0m  H03  Redis responde a PING
-  [32m[PASA][0m  H04  La puerta de enlace responde en /estado
+  [PASA]  H01  Los nueve contenedores estan en ejecucion
+  [PASA]  H02  La base de datos reporta estado saludable
+  [PASA]  H03  Redis responde a PING
+  [PASA]  H04  La puerta de enlace responde en /estado
 
  Microservicios
-  [32m[PASA][0m  H05  La puerta de enlace enruta /api/auth a auth
-  [32m[PASA][0m  H06  La puerta de enlace enruta /api/catalogo a catalogo
-  [32m[PASA][0m  H07  La puerta de enlace enruta /api/pedidos a pedidos
-  [32m[PASA][0m  H08  La puerta de enlace enruta /api/pagos a pagos
-  [32m[PASA][0m  H09  Los microservicios no publican puertos al exterior
-  [32m[PASA][0m  H10  Los cuatro microservicios tienen sus extensiones
-  [32m[PASA][0m  H11  La caida de pagos no afecta a auth y se recupera
+  [PASA]  H05  La puerta de enlace enruta /api/auth a auth
+  [PASA]  H06  La puerta de enlace enruta /api/catalogo a catalogo
+  [PASA]  H07  La puerta de enlace enruta /api/pedidos a pedidos
+  [PASA]  H08  La puerta de enlace enruta /api/pagos a pagos
+  [PASA]  H09  Los microservicios no publican puertos al exterior
+  [PASA]  H10  Los cuatro microservicios tienen sus extensiones
+  [PASA]  H11  La caida de pagos no afecta a auth y se recupera
 
  Base de datos
-  [32m[PASA][0m  H12  El esquema corresponde al Octavo Documento
-  [32m[PASA][0m  H13  Los catalogos base estan cargados
+  [PASA]  H12  El esquema corresponde al Octavo Documento
+  [PASA]  H13  Los catalogos base estan cargados
 
  Flujo de venta
-  [32m[PASA][0m  H14  Alta de producto, lote y entrada de inventario
-  [32m[PASA][0m  H15  Venta a consumidor final descuenta y genera DTE
-  [32m[PASA][0m  H16  La venta queda registrada en la bitacora
-  [32m[PASA][0m  H17  La anulacion restituye la existencia y anula el DTE
-  [32m[PASA][0m  H18  El kardex cuadra despues del ciclo completo
+  [PASA]  H14  Alta de producto, lote y entrada de inventario
+  [PASA]  H15  Venta a consumidor final descuenta y genera DTE
+  [PASA]  H16  La venta queda registrada en la bitacora
+  [PASA]  H17  La anulacion restituye la existencia y anula el DTE
+  [PASA]  H18  El kardex cuadra despues del ciclo completo
 
 ================================================================
  18 pruebas · 18 pasan · 0 fallan · 18 s

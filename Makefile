@@ -6,7 +6,8 @@ COMPOSE := docker compose
 VERSION ?= dev
 
 .PHONY: ayuda preparar instalar-laravel activos base construir arriba abajo reiniciar \
-        registros estado consola mysql redis verificar probar evidencias limpiar
+        registros estado consola mysql redis verificar probar probar-unitarias \
+        probar-seguridad probar-rendimiento probar-todo reporte evidencias limpiar
 
 ayuda: ## Muestra esta ayuda
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -66,10 +67,33 @@ verificar: ## Verifica el esquema contra el documento
 		DB_PASS="$$MYSQL_ROOT_PASSWORD" DB_NAME="$$MYSQL_DATABASE" bash -s' \
 		< scripts/verificar-esquema.sh
 
-probar: ## Ejecuta las pruebas de humo
+probar: ## Ejecuta las pruebas de humo, integracion y sistema
 	bash tests/humo/pruebas-humo.sh
 
-evidencias: ## Genera las evidencias tecnicas de DEVOPS 1
+probar-unitarias: ## Ejecuta las pruebas unitarias con PHPUnit
+	bash tests/unitarias/pruebas-unitarias.sh
+
+probar-seguridad: ## Ejecuta las pruebas de seguridad
+	bash tests/seguridad/pruebas-seguridad.sh
+
+probar-rendimiento: ## Ejecuta las pruebas de rendimiento
+	bash tests/rendimiento/pruebas-rendimiento.sh
+
+# El signo - deja que sigan las demas suites aunque una falle, para que el
+# reporte final muestre todo lo que paso y no solo hasta el primer fallo.
+# El codigo de salida real lo decide el reporte, que falla si algo fallo.
+probar-todo: ## Ejecuta las cuatro suites y genera el reporte HTML
+	-bash tests/unitarias/pruebas-unitarias.sh
+	-bash tests/humo/pruebas-humo.sh
+	-bash tests/seguridad/pruebas-seguridad.sh
+	-bash tests/rendimiento/pruebas-rendimiento.sh
+	@echo
+	$(MAKE) reporte
+
+reporte: ## Genera el reporte HTML de la ejecucion de pruebas
+	python3 scripts/reporte-pruebas.py
+
+evidencias: ## Genera las evidencias tecnicas de la entrega
 	bash scripts/evidencias.sh
 
 limpiar: ## Elimina contenedores, volumenes y datos. Destructivo.

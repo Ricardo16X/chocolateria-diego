@@ -25,10 +25,10 @@ jobs:
       - name: Revisar los scripts de shell
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
-          shellcheck --severity=error scripts/*.sh tests/humo/*.sh docker/base/entrypoint.sh
+          shellcheck --severity=error scripts/*.sh tests/*/*.sh docker/base/entrypoint.sh
 
   pruebas:
-    name: Construccion y pruebas de humo
+    name: Construccion y las cuatro suites de pruebas
     runs-on: ubuntu-latest
     needs: revision
     steps:
@@ -54,10 +54,40 @@ jobs:
           done
           docker compose logs db; exit 1
 
-      - name: Ejecutar las pruebas de humo
-        run: sleep 15 && bash tests/humo/pruebas-humo.sh
+      - name: Esperar a que la aplicacion responda
+        run: sleep 15
 
-      - name: Publicar resultados
+      # Cada suite corre en su propio paso para que la pestana de la
+      # ejecucion muestre cual fallo sin abrir los registros. continue-on-error
+      # deja que sigan las demas: el veredicto lo da el reporte al final.
+      - name: Pruebas unitarias (PHPUnit)
+        id: unitarias
+        continue-on-error: true
+        run: bash tests/unitarias/pruebas-unitarias.sh
+
+      - name: Pruebas de humo, integracion y sistema
+        id: humo
+        continue-on-error: true
+        run: bash tests/humo/pruebas-humo.sh
+
+      - name: Pruebas de seguridad
+        id: seguridad
+        continue-on-error: true
+        run: bash tests/seguridad/pruebas-seguridad.sh
+
+      - name: Pruebas de rendimiento
+        id: rendimiento
+        continue-on-error: true
+        run: bash tests/rendimiento/pruebas-rendimiento.sh
+
+      # Falla el trabajo si alguna suite fallo. El reporte se genera primero,
+      # asi que el artefacto queda publicado incluso cuando algo se rompio:
+      # es la captura de la ejecucion fallida.
+      - name: Generar el reporte HTML y decidir el resultado
+        if: always()
+        run: python3 scripts/reporte-pruebas.py
+
+      - name: Publicar resultados y reporte
         if: always()
         uses: actions/upload-artifact@v4
         with:

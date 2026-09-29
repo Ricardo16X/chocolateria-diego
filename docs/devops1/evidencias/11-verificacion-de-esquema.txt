@@ -1,16 +1,15 @@
 ============================================================
  EVIDENCIA 11 — verificacion de esquema
  Artesanal Chocolate Diego — Entrega DEVOPS 1
- Generada: 2026-09-21 20:09:09
+ Generada: 2026-09-28 21:37:03
 ============================================================
 
-[4m>>>> Executing external compose provider "/home/ricardo16x/.local/bin/podman-compose". Please see podman-compose(1) for how to disable this message. <<<<
 
-[0m============================================================
+============================================================
  VERIFICACION DE ESQUEMA — Artesanal Chocolate Diego
  Base de datos : chocolate_diego
  Servidor      : 8.0.46
- Fecha         : 2026-09-21 20:09:15
+ Fecha         : 2026-09-28 21:37:10
 ============================================================
 
 OBJETO                        DOCUMENTO      MYSQL  RESULTADO

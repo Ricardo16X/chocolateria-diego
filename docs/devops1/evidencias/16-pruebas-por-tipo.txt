@@ -1,0 +1,108 @@
+============================================================
+ EVIDENCIA 16 — pruebas por tipo
+ Artesanal Chocolate Diego — Entrega DEVOPS 1
+ Generada: 2026-09-28 21:37:03
+============================================================
+
+--- Pruebas unitarias (PHPUnit, casos U01 a U17)
+================================================================
+ PRUEBAS UNITARIAS — Artesanal Chocolate Diego
+ Contenedor: catalogo
+================================================================
+
+
+PHPUnit 10.5.64 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.1.34
+Configuration: /var/www/html/phpunit.xml
+
+.......................................                           39 / 39 (100%)
+
+Time: 00:00.112, Memory: 26.00 MB
+
+OK (39 tests, 65 assertions)
+
+
+
+
+ Resultados JUnit: tests/resultados/resultados-unitarias.xml
+================================================================
+
+--- Pruebas de seguridad (casos S01 a S11)
+================================================================
+ PRUEBAS DE SEGURIDAD — Artesanal Chocolate Diego
+ Destino: http://localhost:8080
+================================================================
+
+ Control de acceso
+  [PASA]  S01  Las rutas protegidas no responden sin sesion
+  [PASA]  S02  Un POST sin token CSRF es rechazado con 419
+  [PASA]  S03  El ingreso con credenciales validas funciona
+  [PASA]  S04  Una cuenta bloqueada no inicia sesion
+  [PASA]  S05  Sin el permiso ventas.registrar el punto de venta da 403
+
+ Endurecimiento de la plataforma
+  [PASA]  S06  La puerta de enlace no revela la version del servidor
+  [PASA]  S07  La puerta de enlace envia las cabeceras de seguridad
+  [PASA]  S08  Los microservicios no corren como root
+
+ Manejo de secretos
+  [PASA]  S09  La aplicacion no se conecta a MySQL como root
+  [PASA]  S10  Todas las contrasenas son hash bcrypt de 60 caracteres
+  [PASA]  S11  Las imagenes no llevan el archivo .env horneado
+
+================================================================
+ 11 pruebas · 11 pasan · 0 fallan · 9 s
+ Resultados JUnit: tests/resultados/resultados-seguridad.xml
+================================================================
+
+--- Pruebas de rendimiento (casos R01 a R05)
+================================================================
+ PRUEBAS DE RENDIMIENTO — Artesanal Chocolate Diego
+ Destino: http://localhost:8080
+ Carga:   200 peticiones, 20 concurrentes
+================================================================
+
+ Carga sostenida
+  [PASA]  R01  La puerta de enlace atiende la carga sin un solo error
+           200/200 respuestas HTTP 200, 20 concurrentes
+  [PASA]  R02  El p95 de la puerta de enlace esta bajo el umbral
+           p50=0.002s  p95=0.007s  (umbral 1.000s)
+  [PASA]  R03  El p95 de una ruta con PHP y base esta bajo el umbral
+           p50=0.078s  p95=0.097s  (umbral 3.000s)
+
+ Aislamiento bajo carga
+  [PASA]  R04  El enrutamiento por dominio se mantiene bajo carga
+           los cuatro prefijos siguen atendidos por su propio microservicio
+  [PASA]  R05  Ningun contenedor desborda su memoria tras la carga
+           ningun contenedor supera 512MB
+
+================================================================
+ 5 pruebas · 5 pasan · 0 fallan · 2 s
+ Resultados JUnit: tests/resultados/resultados-rendimiento.xml
+ Linea base:       tests/resultados/linea-base-rendimiento.txt
+================================================================
+
+--- Linea base de rendimiento medida
+============================================================
+ LINEA BASE DE RENDIMIENTO — Artesanal Chocolate Diego
+ Generada: 2026-09-28 21:37:55
+ Carga: 200 peticiones, 20 concurrentes
+============================================================
+
+R01  /estado  200 peticiones, 200 con HTTP 200
+R02  /estado  p50=0.002s  p95=0.007s  umbral=1.000s
+R03  /api/auth/salud  200/200 con HTTP 200  p50=0.078s  p95=0.097s  umbral=3.000s
+R04  25 peticiones concurrentes por prefijo: enrutamiento correcto
+R05  memoria tras la carga: chdiego_db=457MB chdiego_cache=11MB chdiego_mail=11MB chdiego_auth=42MB chdiego_catalogo=51MB chdiego_pedidos=37MB chdiego_pagos=41MB chdiego_queue=56MB chdiego_scheduler=28MB chdiego_gateway=14MB (umbral 512MB)
+
+Resultado: 5 pruebas, 5 pasan, 0 fallan.
+
+--- Reporte HTML consolidado de las cuatro suites
+  [leido]   resultados-unitarias.xml: 39 casos, 0 fallan
+  [leido]   resultados-humo.xml: 18 casos, 0 fallan
+  [leido]   resultados-seguridad.xml: 11 casos, 0 fallan
+  [leido]   resultados-rendimiento.xml: 5 casos, 0 fallan
+
+  73 pruebas · 73 pasan · 0 fallan
+  Reporte: tests/resultados/reporte-de-pruebas.html

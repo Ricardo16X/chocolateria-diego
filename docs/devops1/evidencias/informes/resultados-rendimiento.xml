@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Artesanal Chocolate Diego" tests="5" failures="0" time="2">
+  <testsuite name="Pruebas de rendimiento" tests="5" failures="0" errors="0" time="2" timestamp="2026-09-29T03:37:57">
+    <testcase classname="rendimiento.carga" name="R01 La puerta de enlace atiende la carga sin un solo error" time="0.40"/>
+    <testcase classname="rendimiento.carga" name="R02 El p95 de la puerta de enlace esta bajo el umbral" time="0.01"/>
+    <testcase classname="rendimiento.carga" name="R03 El p95 de una ruta con PHP y base esta bajo el umbral" time="1.03"/>
+    <testcase classname="rendimiento.aislamiento" name="R04 El enrutamiento por dominio se mantiene bajo carga" time="0.55"/>
+    <testcase classname="rendimiento.aislamiento" name="R05 Ningun contenedor desborda su memoria tras la carga" time="0.09"/>
+  </testsuite>
+</testsuites>

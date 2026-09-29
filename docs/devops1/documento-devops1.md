@@ -183,17 +183,20 @@ responsabilidades que los contenedores locales:
   **SendGrid** en producción (ver `docker-compose.override.yml`, donde
   Mailpit se declara exclusivo de desarrollo).
 
-**Azure DevOps.** `azure-pipelines.yml` ya define las dos etapas de
-integración continua —construcción de las cinco imágenes y ejecución de las
-18 pruebas de humo—, disparadas sobre las ramas `main` y `develop` y sobre
-cada *pull request* contra `main` (Azure Repos). Los resultados se publican
-en la pestaña **Tests** de la ejecución, en formato JUnit. Azure Test Plans
-importa los 18 casos de `tests/casos/casos-de-prueba-azure.csv` como
-elementos de trabajo de tipo *Test Case*, cada uno con el mismo
-identificador (H01 a H18) que su prueba automática: esa correspondencia es
-la trazabilidad entre lo que Test Plans describe como pasos manuales y lo
-que el *pipeline* ejecuta. Azure Boards sostiene el tablero de trabajo del
-equipo.
+**Azure DevOps.** `azure-pipelines.yml` define tres etapas: construcción de
+las cinco imágenes, ejecución de las cuatro suites del plan de pruebas
+—unitarias, sistema e integración, seguridad y rendimiento— y despliegue a
+Microsoft Azure, esta última condicionada a la rama `main` y a la espera de
+que existan los recursos de nube. Las dos primeras se disparan sobre `main` y
+`develop` y sobre cada *pull request* contra `main`. Los cuatro informes se
+publican juntos en la pestaña **Tests** de la ejecución, en formato JUnit, y
+el reporte HTML consolidado queda como artefacto. Azure Test Plans importa
+los 51 casos de `tests/casos/casos-de-prueba-azure.csv` como elementos de
+trabajo de tipo *Test Case*, cada uno con el mismo identificador (U01 a U17,
+H01 a H18, S01 a S11, R01 a R05) que su prueba automática: esa
+correspondencia es la trazabilidad entre lo que Test Plans describe como
+pasos manuales y lo que el *pipeline* ejecuta. Azure Boards sostiene el
+tablero de trabajo del equipo.
 
 ### 4. Trazabilidad
 
@@ -238,7 +241,15 @@ que además verifica los 23 objetos por nombre y el cuadre del kardex.)
 
 ## Evidencias
 
-`scripts/evidencias.sh` genera catorce evidencias técnicas en
+El plan de pruebas de la entrega, con su alcance, su estrategia, sus
+criterios de entrada y salida, sus riesgos y su matriz de trazabilidad, está
+en [`plan-de-pruebas.md`](plan-de-pruebas.md). Los cincuenta y un casos con
+sus pasos, sus precondiciones y el resultado obtenido en cada uno están en
+[`casos-de-prueba.md`](casos-de-prueba.md), y los mismos como pasos
+manuales para Azure Test Plans en
+[`tests/casos/casos-de-prueba-azure.csv`](../../tests/casos/casos-de-prueba-azure.csv).
+
+`scripts/evidencias.sh` genera dieciséis evidencias técnicas en
 `docs/devops1/evidencias/`, con su propio índice
 ([`evidencias/README.md`](evidencias/README.md)):
 
@@ -258,6 +269,8 @@ que además verifica los 23 objetos por nombre y el cuadre del kardex.)
 | 12 | Consumo de recursos | CPU, memoria y red por contenedor |
 | 13 | Tolerancia a fallos | La caída de `pagos` no afecta a los demás servicios, y se recupera |
 | 14 | Pruebas de humo | Resultado de las 18 pruebas automáticas: 18 pasan, 0 fallan |
+| 15 | Repositorio e integración continua | Historial del repositorio, sincronía con GitHub y las etapas de los dos pipelines |
+| 16 | Pruebas por tipo | Pruebas unitarias, de seguridad y de rendimiento, con la línea base medida y el reporte consolidado |
 
 La evidencia 13 detiene el contenedor `pagos` a propósito y confirma que
 `auth` y `catalogo` responden con normalidad, y que `pagos` vuelve a
@@ -269,11 +282,13 @@ los nombres de los contenedores en cada petición, no al arrancar.
 ## Conclusiones
 
 La infraestructura de contenedores y la aplicación Laravel que corre sobre
-ella quedan construidas y verificadas de punta a punta: las 18 pruebas de
-humo pasan, las ocho cifras del esquema coinciden con el Octavo Documento de
-Proyecto, y el flujo completo de una venta —registro, descuento de
-inventario, certificación FEL con reintentos, y anulación— se comprobó
-contra la base de datos real, no solo contra código aislado.
+ella quedan construidas y verificadas de punta a punta: las 73 ejecuciones de
+las cuatro suites de prueba pasan, las ocho cifras del esquema coinciden con
+el Octavo Documento de Proyecto, y el flujo completo de una venta —registro,
+descuento de inventario, certificación FEL con reintentos, y anulación— se
+comprobó contra la base de datos real, no solo contra código aislado. El
+control de acceso se verificó por el camino negativo: cuenta bloqueada,
+permiso insuficiente y petición sin token quedan denegados.
 
 La separación en microservicios demostró su valor concreto durante esta
 misma construcción: la puerta de enlace mantuvo el tráfico hacia `auth` y
