@@ -86,7 +86,8 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/local/bin/composer
 # el codigo de App\: la etapa 1 solo tenia composer.json y composer.lock. Sin
 # este paso la imagen queda con los paquetes pero sin vendor/autoload.php, y
 # todo proceso PHP muere en la primera linea de public/index.php.
-RUN composer dump-autoload --optimize --no-dev --no-interaction
+RUN composer dump-autoload --optimize --no-dev --no-interaction \
+    && chown -R laravel:laravel vendor
 
 RUN mkdir -p storage/framework/cache storage/framework/sessions \
              storage/framework/views storage/logs bootstrap/cache \
