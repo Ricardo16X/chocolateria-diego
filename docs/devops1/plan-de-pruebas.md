@@ -142,7 +142,7 @@ unitarias fallan, no tiene sentido interpretar un fallo de sistema.
 
 | Orden | Nivel | Qué cubre | Cómo se ejecuta | Duración |
 |---|---|---|---|---|
-| 1 | Unitarias | Clases en aislamiento | `make probar-unitarias` | menos de 1 s |
+| 1 | Unitarias | Clases en aislamiento, en su propia imagen | `make probar-unitarias` | menos de 1 s |
 | 2 | Humo, integración y sistema | Stack completo y base de datos | `make probar` | 20 s |
 | 3 | Seguridad | Control de acceso y endurecimiento | `make probar-seguridad` | 9 s |
 | 4 | Rendimiento | Carga concurrente | `make probar-rendimiento` | 2 s |
@@ -320,8 +320,10 @@ volumen (`make limpiar`, destructivo) para que vuelvan a aplicarse.
   pruebas de base de datos fallarían por arranque, no por defecto real. Ambos
   pipelines esperan hasta 200 segundos por este estado.
 
-Las pruebas unitarias son la excepción: solo requieren que exista un contenedor
-de aplicación en ejecución, porque no tocan la base ni la red.
+Las pruebas unitarias son la excepción: no requieren ningún servicio
+levantado, solo que exista la imagen base. Corren en una imagen propia
+(`docker/pruebas/Dockerfile`) que agrega las dependencias de desarrollo, porque
+la imagen de producción se instala con `--no-dev` y PHPUnit es una de ellas.
 
 ### 8.2 Criterios de salida
 
@@ -366,7 +368,7 @@ levantar el contenedor de `pagos` a propósito.
 ### 9.2 Ejecución por suite
 
 ```bash
-make probar-unitarias    # U01–U17, PHPUnit dentro del contenedor
+make probar-unitarias    # U01–U17, PHPUnit en la imagen de pruebas
 make probar              # H01–H18, sistema e integración
 make probar-seguridad    # S01–S11
 make probar-rendimiento  # R01–R05
@@ -459,6 +461,10 @@ solo de que pasaron.
 | D-17 | H11 exigía exactamente 502 del microservicio detenido. nginx devuelve 502 cuando la conexión es rechazada y 504 cuando el nombre no resuelve o la conexión expira, y cuál sale depende del motor de contenedores: Docker Engine dio 504 y la prueba falló sin que nada estuviera roto | Alta | Registro de integración continua: `pagos detenido=504` | El caso acepta cualquier error de pasarela (502, 503 o 504) |
 | D-18 | La misma H11 comprobaba que el servicio sobreviviente devolviera «algo distinto de 502», y un 500 por aplicación rota pasaba como si el aislamiento funcionara. Fue lo que dejó pasar D-13 durante una semana | Alta | Revisión del registro de integración continua | Ahora exige 200 del sobreviviente, no la ausencia de un código concreto |
 | D-19 | Los pipelines arrancaban 9 servicios con `-f docker-compose.yml` pero los scripts de prueba invocaban `docker compose` sin `-f`, que carga también `docker-compose.override.yml` porque está versionado: el arranque veía 9 servicios y las pruebas 10 | Media | Comparación de `config --services` entre ambas composiciones | `COMPOSE_FILE` fijada a nivel de pipeline en los dos sistemas |
+| D-20 | **El trabajo de integración continua quedó en verde habiendo ejecutado 34 de 73 pruebas.** Las unitarias fallaban con `Could not open input file: vendor/bin/phpunit`: se ejecutaban con `docker compose exec` dentro de un microservicio, y la imagen de producción instala con `--no-dev`, donde PHPUnit no existe. Funcionaba solo en el equipo de desarrollo, por el montaje de `./src` | Bloqueante | Primera corrida sobre la rama `develop`, 2026-09-29 | Las unitarias corren en su propia imagen (`docker/pruebas/Dockerfile`), que parte de la base y agrega las dependencias de desarrollo. Ya no necesitan ningún servicio levantado |
+| D-21 | El generador del reporte ignoraba un informe ausente y sumaba solo los presentes. Como las suites corren con la marca de continuar ante error, el reporte es la única puerta que decide el resultado: un informe que falta pasaba inadvertido y el trabajo daba verde con una suite entera sin ejecutar. Es lo que permitió que D-20 no se viera | Bloqueante | Revisión de la anotación «exit code 1» en una corrida marcada como correcta | Un informe ausente ahora falla con un mensaje que nombra la suite que no llegó a escribirlo |
+| D-22 | `composer dump-autoload` corría como root en la imagen base y dejaba `vendor/composer/*.php` con dueño root dentro de un `vendor` de `laravel`. Producción solo lee, así que no molestaba, pero impedía que cualquier imagen derivada reinstalara dependencias | Media | Construcción de la imagen de pruebas | Se unifica el dueño de `vendor` al terminar |
+| D-23 | El informe de las unitarias se escribía en un directorio montado del anfitrión, y el contenedor corre como `laravel` (uid 1000): con Podman sin privilegios por el remapeo de uid, y en un agente porque el directorio es del usuario del agente. Fallaba con `Permission denied` al escribir el XML | Media | Ejecución de la imagen de pruebas | El informe se escribe dentro del contenedor y se extrae con `docker cp` |
 
 Ninguno de estos defectos apareció en la lectura del código: todos se
 encontraron al ejecutar el sistema contra contenedores reales y una base de
@@ -497,6 +503,7 @@ salud.
 | Casos de prueba para importar a Azure Test Plans | `tests/casos/casos-de-prueba-azure.csv` |
 | Pruebas unitarias | `src/tests/Unit/` y `src/tests/Feature/` |
 | Ejecutor de las pruebas unitarias | `tests/unitarias/pruebas-unitarias.sh` |
+| Imagen de pruebas unitarias | `docker/pruebas/Dockerfile` |
 | Suite de sistema e integración | `tests/humo/pruebas-humo.sh` |
 | Suite de seguridad | `tests/seguridad/pruebas-seguridad.sh` |
 | Suite de rendimiento | `tests/rendimiento/pruebas-rendimiento.sh` |

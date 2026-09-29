@@ -63,10 +63,11 @@ no como valor exacto reproducible.
 **Tipo:** unitarias · **Herramienta:** PHPUnit 10.5.64 · **Ejecución:**
 `make probar-unitarias`
 
-**Precondición común a los 17 casos:** existe un contenedor de aplicación en
-ejecución con las dependencias de Composer instaladas. No requieren base de
-datos, ni Redis, ni red: cada caso construye en memoria lo que necesita. Por eso
-la suite completa tarda 0.11 s.
+**Precondición común a los 17 casos:** existe la imagen base
+(`make base`). La suite corre en una imagen propia,
+`docker/pruebas/Dockerfile`, que agrega las dependencias de desarrollo. No
+requiere ningún servicio levantado, ni base de datos, ni Redis, ni red: cada
+caso construye en memoria lo que necesita. Por eso tarda 0.11 s.
 
 ## Grupo 1.1 — Traducción de errores de procedimiento (U01–U05)
 
@@ -328,8 +329,8 @@ fallaría.
 **Duración del grupo:** 0.092 s · **4 de 4 aprobados**
 
 **Precondición del grupo:** además de la común, el contenedor de servicios de
-Laravel debe estar arrancado, porque el adaptador lee configuración y escribe
-en un disco de almacenamiento. Ese disco se reemplaza por uno falso en cada
+Laravel debe estar arrancado dentro del propio proceso de PHPUnit, porque el
+adaptador lee configuración y escribe en un disco de almacenamiento. Ese disco se reemplaza por uno falso en cada
 caso, y el documento FEL se construye en memoria: no se toca la base de datos.
 
 ### U14 — Devuelve las cuatro claves que el contrato declara
