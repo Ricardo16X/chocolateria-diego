@@ -415,7 +415,7 @@ levantados (`make arriba`) y `chdiego_db` en estado `healthy`.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.40 s |
+| Duración | 0.52 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -433,7 +433,7 @@ levantados (`make arriba`) y `chdiego_db` en estado `healthy`.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común, con el esquema ya inicializado |
-| Duración | 0.04 s |
+| Duración | 0.08 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -450,7 +450,7 @@ levantados (`make arriba`) y `chdiego_db` en estado `healthy`.
 | Tipo | Sistema |
 | Prioridad | 2 |
 | Precondición | La común |
-| Duración | 0.74 s |
+| Duración | 1.18 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -489,7 +489,7 @@ qué contestó.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.03 s |
+| Duración | 0.34 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -505,7 +505,7 @@ qué contestó.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.03 s |
+| Duración | 0.08 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -521,7 +521,7 @@ qué contestó.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.03 s |
+| Duración | 0.23 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -537,7 +537,7 @@ qué contestó.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.03 s |
+| Duración | 0.30 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -556,7 +556,7 @@ solo son alcanzables desde dentro de la red interna.
 | Tipo | Sistema |
 | Prioridad | 2 |
 | Precondición | La común |
-| Duración | 0.16 s |
+| Duración | 0.21 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -575,7 +575,7 @@ hacia el exterior es `8080 → 80` en el gateway. Evidencias 04 y 08.
 | Tipo | Sistema |
 | Prioridad | 2 |
 | Precondición | La común |
-| Duración | 3.06 s |
+| Duración | 3.59 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -597,20 +597,30 @@ microservicios aguanta un fallo real, no solo que existe en el diagrama.
 | Tipo | Sistema |
 | Prioridad | 1 |
 | Precondición | La común. El caso deja el sistema como lo encontró |
-| Duración | 8.58 s |
+| Duración | 9.44 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
 |---|---|---|
 | 1 | Ejecutar `docker compose stop pagos` | El contenedor `chdiego_pagos` se detiene |
-| 2 | Ejecutar `curl -I http://localhost:8080/api/pagos/salud` | La respuesta es `502 Bad Gateway` |
-| 3 | Ejecutar `curl -I http://localhost:8080/api/auth/salud` | La respuesta **no** es 502: `auth` sigue atendiendo |
-| 4 | Ejecutar `docker compose start pagos` y repetir el paso 2 | `pagos` vuelve a responder sin reiniciar la puerta de enlace |
+| 2 | Ejecutar `curl -I http://localhost:8080/api/pagos/salud` | La respuesta es un error de pasarela: 502, 503 o 504 |
+| 3 | Ejecutar `curl -I http://localhost:8080/api/auth/salud` | La respuesta es **200**: `auth` sigue atendiendo de verdad |
+| 4 | Ejecutar `docker compose start pagos` y repetir el paso 2 | `pagos` vuelve a responder 200 sin reiniciar la puerta de enlace |
 
 **Resultado obtenido:** con `pagos` detenido, `auth` y `catalogo` respondieron
-con normalidad y solo `/api/pagos` devolvió 502. Al volver a levantar `pagos`,
-la ruta respondió de nuevo sin tocar el gateway, porque nginx resuelve los
-nombres de los contenedores en cada petición y no al arrancar. Evidencia 13.
+200 y solo `/api/pagos` devolvió un error de pasarela. Al volver a levantar
+`pagos`, la ruta respondió 200 de nuevo sin tocar el gateway, porque nginx
+resuelve los nombres de los contenedores en cada petición y no al arrancar.
+Evidencia 13.
+
+**Dos cosas que este caso aprendió del pipeline** (defectos D-17 y D-18). El
+paso 2 exigía exactamente 502: nginx devuelve 502 cuando la conexión es
+rechazada y 504 cuando el nombre no resuelve o la conexión expira, y cuál sale
+depende del motor de contenedores. Docker Engine dio 504 y el caso falló en
+integración continua sin que nada estuviera roto. El paso 3 comprobaba que
+`auth` devolviera «algo distinto de 502», y así aceptó durante una semana un
+500 por aplicación rota como si el aislamiento funcionara. Ahora exige el
+código correcto, no la ausencia de uno incorrecto.
 
 ## Grupo 2.3 — Base de datos (H12–H13)
 
@@ -624,7 +634,7 @@ altera el esquema sin actualizar el documento, o al contrario, este caso falla.
 | Tipo | Integración |
 | Prioridad | 1 |
 | Precondición | La común |
-| Duración | 0.93 s |
+| Duración | 1.21 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -658,7 +668,7 @@ corresponde al documento*. Evidencia 11.
 | Tipo | Integración |
 | Prioridad | 2 |
 | Precondición | La común, con el volumen `chdiego_db_data` creado por primera vez para que corran los scripts de inicialización |
-| Duración | 0.74 s |
+| Duración | 1.28 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -688,7 +698,7 @@ Los datos que dejan son identificables por el prefijo `PH-`.
 | Tipo | Integración y aceptación |
 | Prioridad | 1 |
 | Precondición | H13 aprobado |
-| Duración | 0.76 s |
+| Duración | 1.10 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -707,7 +717,7 @@ unidades.
 | Tipo | Integración y aceptación |
 | Prioridad | 1 |
 | Precondición | H14 aprobado |
-| Duración | 0.75 s |
+| Duración | 1.31 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -730,7 +740,7 @@ nunca espera a un servicio externo.
 | Tipo | Integración |
 | Prioridad | 2 |
 | Precondición | H15 aprobado |
-| Duración | 0.77 s |
+| Duración | 0.96 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -748,7 +758,7 @@ acuerde de registrarla.
 | Tipo | Integración y aceptación |
 | Prioridad | 1 |
 | Precondición | H15 aprobado |
-| Duración | 0.74 s |
+| Duración | 1.61 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |
@@ -770,7 +780,7 @@ con un error de negocio identificable y no con un fallo genérico.
 | Tipo | Integración y aceptación |
 | Prioridad | 1 |
 | Precondición | H17 aprobado |
-| Duración | 0.74 s |
+| Duración | 0.97 s |
 | Resultado | **Aprobado** |
 
 | # | Acción | Resultado esperado |

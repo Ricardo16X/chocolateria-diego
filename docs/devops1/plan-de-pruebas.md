@@ -452,10 +452,28 @@ solo de que pasaron.
 | D-10 | La evidencia del repositorio reportaba la sincronía con el remoto sin el identificador del commit: `git rev-parse --short` acepta una sola revisión y fallaba en silencio al recibir dos | Media | Revisión de la evidencia 15 | Se separó en dos invocaciones |
 | D-11 | La misma evidencia listaba `push` y `pull_request` como trabajos de GitHub Actions: son disparadores, y el patrón de búsqueda no distinguía el nivel de anidamiento | Baja | Revisión de la evidencia 15 | Se reemplazó por una lectura de los hijos de `jobs:` |
 | D-12 | El reporte HTML escribía "1 pruebas fallaron" cuando fallaba una sola | Baja | Prueba deliberada del camino de fallo del reporte | Se agregó la concordancia de número |
+| D-13 | **La imagen nunca contuvo `vendor/autoload.php`.** `docker/base/Dockerfile` instalaba las dependencias con `--no-autoloader` y nada ejecutaba `composer dump-autoload` después, así que todo proceso PHP moría en la primera línea. En desarrollo no se notaba porque `docker-compose.override.yml` monta `./src` encima, y el equipo sí tiene un `vendor` completo | Bloqueante | Registros de integración continua de la corrida del 2026-09-22 (`auth` devolvía 500) | Se agregó `composer dump-autoload --optimize --no-dev` en la etapa 2, después de copiar `src/` |
+| D-14 | La imagen tampoco llevaba los activos de Vite: `.dockerignore` excluye `src/public/build` y nada los compilaba dentro de la imagen, así que `@vite()` lanzaba excepción y ninguna vista Blade se servía | Bloqueante | Arranque con la composición de producción | Se agregó una etapa `activos` con Node 20 que compila `resources/` dentro de la construcción |
+| D-15 | En la composición de producción no hay `APP_KEY`: la imagen excluye `src/.env` (correcto) y el `.env` de la raíz no la define (también correcto, ver D-03). Laravel lanzaba `MissingAppKeyException` y toda vista respondía 500 | Bloqueante | Arranque con la composición de producción | Los dos pipelines generan una clave desechable por corrida con `openssl rand`. En producción viene de los secretos del proveedor |
+| D-16 | **El arranque en integración continua fallaba de forma intermitente.** Seis servicios montan el volumen compartido `app_storage`; al crearse a la vez sobre un volumen nuevo, Docker intenta sembrarlo desde la imagen en paralelo y choca consigo mismo: `failed to mkdir .../chdiego_app_storage/_data/app: file exists` | Bloqueante | Registro de la corrida del 2026-09-29, paso «Levantar los servicios» | Arranque escalonado en ambos pipelines: `db` y `cache` primero, luego un solo servicio de aplicación que siembra los volúmenes, y al final el resto |
+| D-17 | H11 exigía exactamente 502 del microservicio detenido. nginx devuelve 502 cuando la conexión es rechazada y 504 cuando el nombre no resuelve o la conexión expira, y cuál sale depende del motor de contenedores: Docker Engine dio 504 y la prueba falló sin que nada estuviera roto | Alta | Registro de integración continua: `pagos detenido=504` | El caso acepta cualquier error de pasarela (502, 503 o 504) |
+| D-18 | La misma H11 comprobaba que el servicio sobreviviente devolviera «algo distinto de 502», y un 500 por aplicación rota pasaba como si el aislamiento funcionara. Fue lo que dejó pasar D-13 durante una semana | Alta | Revisión del registro de integración continua | Ahora exige 200 del sobreviviente, no la ausencia de un código concreto |
+| D-19 | Los pipelines arrancaban 9 servicios con `-f docker-compose.yml` pero los scripts de prueba invocaban `docker compose` sin `-f`, que carga también `docker-compose.override.yml` porque está versionado: el arranque veía 9 servicios y las pruebas 10 | Media | Comparación de `config --services` entre ambas composiciones | `COMPOSE_FILE` fijada a nivel de pipeline en los dos sistemas |
 
 Ninguno de estos defectos apareció en la lectura del código: todos se
 encontraron al ejecutar el sistema contra contenedores reales y una base de
 datos real, o al revisar la salida que el propio sistema produjo.
+
+Los siete últimos (D-13 a D-19) merecen una nota aparte, porque son los que
+justifican el gasto de montar integración continua. Las cuatro suites pasaban
+en el equipo de desarrollo y seguían pasando, mientras **la imagen de
+contenedor no podía ejecutar la aplicación por sí sola**: el montaje de `./src`
+del archivo de desarrollo la tapaba. Solo el agente de integración continua,
+que arranca la composición de producción sin ese montaje, lo puso en
+evidencia. D-18 explica por qué tardó: la única prueba que atravesaba la
+aplicación por HTTP durante un fallo comprobaba la ausencia de un código
+concreto en vez de la presencia del correcto, y aceptó un 500 como si fuera
+salud.
 
 ## 11. Riesgos del plan de pruebas
 
