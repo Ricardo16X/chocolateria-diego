@@ -12,12 +12,12 @@ Información, código 1900-047, a cargo del Ing. Erick Roberto Aguilar Juárez.
 
 ## Integrantes — Grupo 8
 
-| Carné | Nombre | Rol |
-|---|---|---|
-| 0900-22-15843 | Carla Estefanía Duque Martínez | Scrum Master |
-| 0900-09-13357 | William Natanael Vásquez Navichoc | Product Owner |
-| 0900-09-6892 | Julio Alexis León Rodríguez | Desarrollo — Azure DevOps |
-| 0900-23-22081 | Ricardo Ismael Pérez Ajanel | Desarrollo — Docker y microservicios |
+| Nombre | Rol |
+|---|---|
+| Carla Estefanía Duque Martínez | Scrum Master |
+| William Natanael Vásquez Navichoc | Product Owner |
+| Julio Alexis León Rodríguez | Desarrollo — Azure DevOps |
+| Ricardo Ismael Pérez Ajanel | Desarrollo — Docker y microservicios |
 
 ## Arquitectura de microservicios
 
@@ -149,15 +149,6 @@ docker run --rm -v "$(pwd)/src:/app" -w /app node:20-alpine sh -c "npm install &
 docker compose build
 docker compose up -d
 ```
-
-Direcciones:
-
-- Puerta de enlace: http://localhost:8080
-- Bandeja de correo de desarrollo: http://localhost:8025
-- MySQL desde el equipo: `localhost:3307`
-- Ingreso: http://localhost:8080/ingreso — usuario `admin`, contraseña
-  `Chocolate2026` (cambiarla en el primer ingreso real; ver
-  `docker/mysql/init/03_datos_iniciales.sql`)
 
 ## Base de datos
 
